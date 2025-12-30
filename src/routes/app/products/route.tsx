@@ -22,7 +22,7 @@ function RouteComponent() {
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <div className=" bg-base-200 min-h-full w-2xs p-4">
+        <div className=" bg-base-200 min-h-full w-2xs md:border-r fade ">
           {/* Sidebar content here */}
           <DrawerContent />
         </div>

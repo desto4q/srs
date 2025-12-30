@@ -30,7 +30,7 @@ function RouteComponent() {
       let filterString = `name ?~ "${search}"`;
 
       if (filters.category) {
-        filterString += ` && category.name = "${filters.category}"`;
+        filterString += ` && category.id = "${filters.category}"`;
       }
 
       // Apply price filters considering both 'price' and 'discountPrice'
