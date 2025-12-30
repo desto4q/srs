@@ -1,5 +1,6 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import DrawerContent from "../products/-components/DrawerContent";
+import OrderDrawerContent from "./-components/OrderDrawerContent";
 
 export const Route = createFileRoute("/app/orders")({
   component: RouteComponent,
@@ -24,7 +25,7 @@ function RouteComponent() {
             className="drawer-overlay"
           ></label>
           <ul className="menu bg-base-200 min-h-full w-2xs p-4">
-            <DrawerContent />
+            <OrderDrawerContent />
             {/* Sidebar content here */}
             {/*<li>
               <a>Sidebar Item 1</a>
