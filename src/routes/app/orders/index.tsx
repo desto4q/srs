@@ -38,7 +38,9 @@ function RouteComponent() {
   return (
     <PageContainer>
       <div>
-        <h2 className="text-xl font-bold border-b py-4 fade">Order Items</h2>
+        <h2 className="text-xl font-bold border-b h-18 flex items-center fade">
+          Order Items
+        </h2>
         <PageLoader query={query}>
           {(data) => {
             return (

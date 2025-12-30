@@ -1,4 +1,5 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
+import DrawerContent from "../products/-components/DrawerContent";
 
 export const Route = createFileRoute("/app/orders")({
   component: RouteComponent,
@@ -18,18 +19,19 @@ function RouteComponent() {
         </div>
         <div className="drawer-side">
           <label
-            htmlFor="my-drawer-3"
+            htmlFor="order-drawer"
             aria-label="close sidebar"
             className="drawer-overlay"
           ></label>
-          <ul className="menu bg-base-200 min-h-full w-80 p-4">
+          <ul className="menu bg-base-200 min-h-full w-2xs p-4">
+            <DrawerContent />
             {/* Sidebar content here */}
-            <li>
+            {/*<li>
               <a>Sidebar Item 1</a>
             </li>
             <li>
               <a>Sidebar Item 2</a>
-            </li>
+            </li>*/}
           </ul>
         </div>
       </div>
