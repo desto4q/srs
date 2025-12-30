@@ -34,7 +34,10 @@ export default function DrawerContent() {
       <h2 className="md:h-20 h-16 p-4 flex items-center text-lg font-bold border-b fade">
         Filters & Categories
       </h2>
-      <div className="p-4 space-y-4">
+      <form
+        onSubmit={form.handleSubmit(updateFilters)}
+        className="p-4 space-y-4"
+      >
         <div>
           <h2 className="px-2 py-2 font-semibold">Price</h2>
 
@@ -98,7 +101,7 @@ export default function DrawerContent() {
         >
           Apply Filters
         </button>
-      </div>
+      </form>
     </>
   );
 }
