@@ -10,7 +10,6 @@ import reportWebVitals from "./reportWebVitals.ts";
 
 // Create a new router instance
 //@ts-ignore
-//
 const router = createRouter({
   //@ts-ignore
   routeTree,

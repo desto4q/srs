@@ -4,6 +4,7 @@ import CardContainer from "@/components/layouts/CardContainer";
 import CompContainer from "@/components/layouts/CompContainer";
 import CompLoader from "@/components/layouts/ComponentLoader";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 
 export default function Trending() {
   const query = useQuery({
@@ -21,9 +22,12 @@ export default function Trending() {
         title="Trending"
         rightComponent={
           <>
-            <button className="btn btn-primary btn-soft ring btn-sm fade">
+            <Link
+              to="/app/products"
+              className="btn btn-primary btn-soft ring btn-sm fade"
+            >
               See All
-            </button>
+            </Link>
           </>
         }
       >
