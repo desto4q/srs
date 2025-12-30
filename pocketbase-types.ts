@@ -16,6 +16,7 @@ export enum Collections {
 	Likes = "likes",
 	Products = "products",
 	ProfileSettings = "profileSettings",
+	Reviews = "reviews",
 	Users = "users",
 }
 
@@ -149,6 +150,16 @@ export type ProfileSettingsRecord = {
 	zipcode?: string
 }
 
+export type ReviewsRecord = {
+	created: IsoAutoDateString
+	id: string
+	product_id?: RecordIdString
+	review?: string
+	star?: number
+	updated: IsoAutoDateString
+	user_id?: RecordIdString
+}
+
 export type UsersRecord = {
 	avatar?: FileNameString
 	created: IsoAutoDateString
@@ -173,6 +184,7 @@ export type CategoriesResponse<Texpand = unknown> = Required<CategoriesRecord> &
 export type LikesResponse<Texpand = unknown> = Required<LikesRecord> & BaseSystemFields<Texpand>
 export type ProductsResponse<Toptions = unknown, Texpand = unknown> = Required<ProductsRecord<Toptions>> & BaseSystemFields<Texpand>
 export type ProfileSettingsResponse<Texpand = unknown> = Required<ProfileSettingsRecord> & BaseSystemFields<Texpand>
+export type ReviewsResponse<Texpand = unknown> = Required<ReviewsRecord> & BaseSystemFields<Texpand>
 export type UsersResponse<Texpand = unknown> = Required<UsersRecord> & AuthSystemFields<Texpand>
 
 // Types containing all Records and Responses, useful for creating typing helper functions
@@ -188,6 +200,7 @@ export type CollectionRecords = {
 	likes: LikesRecord
 	products: ProductsRecord
 	profileSettings: ProfileSettingsRecord
+	reviews: ReviewsRecord
 	users: UsersRecord
 }
 
@@ -202,6 +215,7 @@ export type CollectionResponses = {
 	likes: LikesResponse
 	products: ProductsResponse
 	profileSettings: ProfileSettingsResponse
+	reviews: ReviewsResponse
 	users: UsersResponse
 }
 

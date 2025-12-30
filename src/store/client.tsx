@@ -21,6 +21,7 @@ export const useCartStore = () => {
     cartItem: CartItem;
   }) => {
     if (cart[id]) {
+      // console.log(cart[id], "position");
       return toast.info("Item already in cart");
     }
     const item_id = cartItem["id"];

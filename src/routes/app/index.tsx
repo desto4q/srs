@@ -13,12 +13,15 @@ export const Route = createFileRoute("/app/")({
 
 function RouteComponent() {
   return (
-    <PageContainer>
+    <>
       <AppHero />
-      {/*new in*/}
-      <NewIn />
-      {/*//trending*/}
-      <Trending />
-    </PageContainer>
+
+      <PageContainer>
+        {/*new in*/}
+        <NewIn />
+        {/*//trending*/}
+        <Trending />
+      </PageContainer>
+    </>
   );
 }

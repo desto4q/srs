@@ -36,7 +36,7 @@ export default function AppHero() {
                   className="embla__viewport h-full relative isolate"
                   ref={emblaRef}
                 >
-                  <div className="inset-0 z-10 bg-linear-30 from-base-100 via-base-100/90 to-transparent absolute"></div>
+                  <div className="inset-0 z-10 pointer-events-none bg-linear-30 from-base-100 via-base-100/90 to-transparent absolute"></div>
                   <div className="embla__container h-full  flex ">
                     {data.map((banner) => (
                       <div

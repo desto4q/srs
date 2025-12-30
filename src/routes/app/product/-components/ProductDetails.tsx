@@ -57,13 +57,12 @@ export default function ProductDetails({
       quantity: quantity,
       price: (basePrice || 0) + additions,
     };
+    // console.log(cartItem);
 
     add_to_cart({
       id: cartItem.id,
       cartItem: cartItem,
     });
-
-    toast.success(`${cartItem.name} added to cart!`);
   };
 
   const [quantity, setQuantity] = useState<number>(1);

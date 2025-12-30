@@ -1,8 +1,9 @@
-import { compute_total_price } from "@/helpers/client";
+import { compute_total_price, get_image } from "@/helpers/client";
 import { useCartStore } from "@/store/client";
 import type { CartItem } from "@/types";
 
 export default function CartListItem({ item }: { item: CartItem }) {
+  const { remove_from_cart } = useCartStore();
   return (
     <>
       <div
@@ -10,7 +11,7 @@ export default function CartListItem({ item }: { item: CartItem }) {
         className="bg-base-200 ring fade p-4 flex gap-4 rounded-box "
       >
         <figure className="h-22 w-22 lg:aspect-9/12  lg:h-auto lg:min-w-32 ring fade  shrink-0 rounded-box bg-primary/30 overflow-hidden">
-          {/*<img src="" alt="" className="w-full h-full fade object-cover" />*/}
+          {/*<img src={get_image(item,item.img)} alt="" className="w-full h-full fade object-cover" />*/}
         </figure>
         {/*item details*/}
         <div className="flex-grow flex flex-col justify-between">
@@ -19,7 +20,7 @@ export default function CartListItem({ item }: { item: CartItem }) {
             {Object.entries(item.options).map(([key, option]) => (
               <p key={key} className="text-sm">
                 <span className="font-semibold capitalize">{key}</span>:{" "}
-                {option.name}
+                {option.label}
               </p>
             ))}
           </div>
@@ -38,7 +39,10 @@ export default function CartListItem({ item }: { item: CartItem }) {
             <button className="btn btn-link btn-sm p-0 h-auto min-h-0">
               Move to Favorites
             </button>
-            <button className="btn btn-link btn-sm p-0 h-auto min-h-0">
+            <button
+              className="btn btn-link btn-sm p-0 h-auto min-h-0"
+              onClick={() => remove_from_cart(item.id)}
+            >
               Remove
             </button>
           </div>
