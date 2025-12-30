@@ -20,7 +20,7 @@ export default function CartListItem({ item }: { item: CartItem }) {
             {Object.entries(item.options).map(([key, option]) => (
               <p key={key} className="text-sm">
                 <span className="font-semibold capitalize">{key}</span>:{" "}
-                {option.label}
+                {option.values[0].label}
               </p>
             ))}
           </div>
@@ -35,8 +35,14 @@ export default function CartListItem({ item }: { item: CartItem }) {
               ).toFixed(2)}
             </div>
           </div>
+
           <div className="flex gap-4 mt-2">
-            <button className="btn btn-link btn-sm p-0 h-auto min-h-0">
+            <button
+              onClick={() => {
+                console.log(item);
+              }}
+              className="btn btn-link btn-sm p-0 h-auto min-h-0"
+            >
               Move to Favorites
             </button>
             <button

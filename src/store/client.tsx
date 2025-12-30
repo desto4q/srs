@@ -51,6 +51,9 @@ export const useCartStore = () => {
     delete new_cart[id];
     setCart(new_cart);
   };
+  const clear_cart = () => {
+    setCart({});
+  };
   return {
     cart,
     cart_array,
@@ -58,6 +61,7 @@ export const useCartStore = () => {
     increase_quantity,
     decrease_quantity,
     remove_from_cart,
+    clear_cart,
   };
 };
 

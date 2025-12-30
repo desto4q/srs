@@ -28,3 +28,12 @@ export interface CartItem {
 export type UserCart = {
   [key: string]: CartItem;
 };
+
+export type OrderType = {
+  productId: string;
+  userId: string;
+  refId: string;
+  productOptions: CartItemOption;
+  price: number;
+  quantity: number;
+};

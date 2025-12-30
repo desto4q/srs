@@ -14,6 +14,7 @@ export enum Collections {
 	Banners = "banners",
 	Categories = "categories",
 	Likes = "likes",
+	Orders = "orders",
 	Products = "products",
 	ProfileSettings = "profileSettings",
 	Reviews = "reviews",
@@ -123,6 +124,18 @@ export type LikesRecord = {
 	user?: RecordIdString
 }
 
+export type OrdersRecord<TproductOptions = unknown> = {
+	created: IsoAutoDateString
+	id: string
+	price?: number
+	productId?: RecordIdString
+	productOptions?: null | TproductOptions
+	quantity?: number
+	refId?: string
+	updated: IsoAutoDateString
+	userId?: RecordIdString
+}
+
 export type ProductsRecord<Toptions = unknown> = {
 	category?: RecordIdString
 	created: IsoAutoDateString
@@ -182,6 +195,7 @@ export type SuperusersResponse<Texpand = unknown> = Required<SuperusersRecord> &
 export type BannersResponse<Texpand = unknown> = Required<BannersRecord> & BaseSystemFields<Texpand>
 export type CategoriesResponse<Texpand = unknown> = Required<CategoriesRecord> & BaseSystemFields<Texpand>
 export type LikesResponse<Texpand = unknown> = Required<LikesRecord> & BaseSystemFields<Texpand>
+export type OrdersResponse<TproductOptions = unknown, Texpand = unknown> = Required<OrdersRecord<TproductOptions>> & BaseSystemFields<Texpand>
 export type ProductsResponse<Toptions = unknown, Texpand = unknown> = Required<ProductsRecord<Toptions>> & BaseSystemFields<Texpand>
 export type ProfileSettingsResponse<Texpand = unknown> = Required<ProfileSettingsRecord> & BaseSystemFields<Texpand>
 export type ReviewsResponse<Texpand = unknown> = Required<ReviewsRecord> & BaseSystemFields<Texpand>
@@ -198,6 +212,7 @@ export type CollectionRecords = {
 	banners: BannersRecord
 	categories: CategoriesRecord
 	likes: LikesRecord
+	orders: OrdersRecord
 	products: ProductsRecord
 	profileSettings: ProfileSettingsRecord
 	reviews: ReviewsRecord
@@ -213,6 +228,7 @@ export type CollectionResponses = {
 	banners: BannersResponse
 	categories: CategoriesResponse
 	likes: LikesResponse
+	orders: OrdersResponse
 	products: ProductsResponse
 	profileSettings: ProfileSettingsResponse
 	reviews: ReviewsResponse

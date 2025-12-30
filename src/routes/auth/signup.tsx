@@ -1,10 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useForm, FormProvider } from "react-hook-form";
 import SimpleInput from "../../components/inputs/SimpleInput"; // Adjust path as needed
 import { AtSign, Lock, User } from "lucide-react"; // Assuming these icons are used
 import { toast } from "sonner";
 import { pb } from "@/api/apiClient";
 import { extract_message } from "@/helpers/api";
+import { useMutation } from "@tanstack/react-query";
 
 interface SignupFormInputs {
   fullName: string;
@@ -18,6 +19,7 @@ export const Route = createFileRoute("/auth/signup")({
 });
 
 function RouteComponent() {
+  const nav = useNavigate();
   const methods = useForm<SignupFormInputs>({
     defaultValues: {
       fullName: "",
@@ -37,6 +39,14 @@ function RouteComponent() {
 
   const password = watch("password");
 
+  const mut = useMutation({
+    mutationFn: (fn: any) => fn(),
+    onSuccess: () => {
+      nav({
+        to: "/auth/login",
+      });
+    },
+  });
   const onSubmit = (data: SignupFormInputs) => {
     // Manual validation for password match
     if (data.password !== data.passwordConfirm) {
@@ -47,11 +57,14 @@ function RouteComponent() {
       return;
     }
     console.log(data);
-    toast.promise(pb.collection("users").create(data), {
-      loading: "Creating account...",
-      success: "Account created successfully!",
-      error: extract_message,
-    });
+    toast.promise(
+      mut.mutateAsync(() => pb.collection("users").create(data)),
+      {
+        loading: "Creating account...",
+        success: "Account created successfully!",
+        error: extract_message,
+      },
+    );
   };
 
   return (
@@ -118,53 +131,11 @@ function RouteComponent() {
               />
             </div>
 
-            {/*<div className="space-y-1 text-sm">
-              <p className="font-semibold">Your password must contain:</p>
-              <ul className="grid grid-cols-2 gap-1">
-                <li
-                  className={`flex items-center gap-2 ${
-                    password && password.length >= 8
-                      ? "text-success"
-                      : "text-error"
-                  }`}
-                >
-                  {password && password.length >= 8 ? "✓" : "✗"} A minimum of 8
-                  characters.
-                </li>
-                <li
-                  className={`flex items-center gap-2 ${
-                    password && /[0-9]/.test(password)
-                      ? "text-success"
-                      : "text-error"
-                  }`}
-                >
-                  {password && /[0-9]/.test(password) ? "✓" : "✗"} At least one
-                  number
-                </li>
-                <li
-                  className={`flex items-center gap-2 ${
-                    password && /[a-z]/.test(password)
-                      ? "text-success"
-                      : "text-error"
-                  }`}
-                >
-                  {password && /[a-z]/.test(password) ? "✓" : "✗"} At least one
-                  lowercase letter
-                </li>
-                <li
-                  className={`flex items-center gap-2 ${
-                    password && /[A-Z]/.test(password)
-                      ? "text-success"
-                      : "text-error"
-                  }`}
-                >
-                  {password && /[A-Z]/.test(password) ? "✓" : "✗"} At least one
-                  uppercase letter
-                </li>
-              </ul>
-            </div>*/}
-
-            <button type="submit" className="btn btn-primary w-full">
+            <button
+              disabled={mut.isPending}
+              type="submit"
+              className="btn btn-primary w-full"
+            >
               Signup
             </button>
           </form>
@@ -172,9 +143,9 @@ function RouteComponent() {
 
         <div className="text-center text-sm">
           Already have an account?{" "}
-          <a href="/auth/login" className="link link-hover text-primary">
+          <Link to="/auth/login" className="link link-hover text-primary">
             Login
-          </a>
+          </Link>
         </div>
       </div>
     </div>
