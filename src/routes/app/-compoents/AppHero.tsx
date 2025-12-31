@@ -39,35 +39,35 @@ export default function AppHero() {
                   <div className="embla__container h-full  flex ">
                     {data.map((banner) => (
                       <div
-                        className="embla__slide  flex-[0_0_100%] min-w-0 relative flex p-12 items-center justify-center"
+                        className="embla__slide flex-[0_0_100%] min-w-0 relative flex p-4 md:p-12 items-center justify-center"
                         key={banner.id}
                       >
-                        <div className="flex flex-1 items-center justify-center container  p-8 rounded-box shadow fade  ring mx-auto">
-                          <div className="flex-1 text-left pr-16">
+                        <div className="flex flex-col-reverse gap-4 md:gap-2 md:flex-row flex-1 items-center justify-center container p-4 md:p-8 rounded-box shadow fade ring mx-auto ">
+                          <div className="flex-1 text-center md:text-left md:pr-16 mb-8 md:mb-0">
                             {banner.title && (
-                              <h2 className="text-6xl font-bold mb-6 leading-tight">
+                              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 leading-tight">
                                 {banner.title}
                               </h2>
                             )}
                             {banner.description && (
-                              <p className="text-lg mb-8 max-w-lg text-current/80">
+                              <p className="text-base line-clamp-3 md:line-clamp-none md:text-lg mb-6 md:mb-8 max-w-lg mx-auto md:mx-0 text-current/80">
                                 {banner.description}
                               </p>
                             )}
-                            <div className="flex items-center space-x-4">
+                            <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
                               {banner.product_id && (
                                 <Link
                                   to="/app/product/$id"
                                   //@ts-ignore
                                   params={{ id: banner.product_id }}
-                                  className="btn btn-primary"
+                                  className="btn btn-primary w-full sm:w-auto"
                                 >
                                   Shop Now
                                 </Link>
                               )}
                               <Link
                                 to="/app/products"
-                                className="flex items-center text-gray-800 font-semibold text-lg group"
+                                className="flex items-center text-gray-800 font-semibold text-base md:text-lg group"
                               >
                                 Explore Collection
                                 <svg
@@ -87,13 +87,14 @@ export default function AppHero() {
                               </Link>
                             </div>
                           </div>
-                          <div className="flex-1 flex justify-end">
+                          <div className="flex-1 flex justify-center md:justify-end">
                             {banner.banner_img && (
-                              <div className="rounded-2xl overflow-hidden shadow-2xl">
+                              <div className="rounded-2xl overflow-hidden shadow-2xl max-w-full h-auto">
                                 <img
                                   src={get_image(banner, banner.banner_img)}
                                   alt={banner.title || "Banner Image"}
-                                  className="w-[500px] h-[500px] object-cover"
+                                  className="w-full h-auto max-w-[250px] md:max-w-[500px] object-cover"
+                                  style={{ aspectRatio: "1/1" }} // Maintain aspect ratio
                                 />
                               </div>
                             )}
