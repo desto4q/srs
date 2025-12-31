@@ -34,7 +34,9 @@ export default function AuthButtonHeader() {
       <Link to="/auth/login" className="btn btn-primary">
         Login
       </Link>
-      <button className="btn btn-accent btn-soft ring fade">Signup</button>
+      <Link to="/auth/signup" className="btn btn-accent btn-soft ring fade">
+        Signup
+      </Link>
     </div>
   );
 }

@@ -16,7 +16,7 @@ export default function CompLoader<TData>(props: PageLoader<TData>) {
     }
     return (
       <div
-        className={`${minHeight ? `min-h-${minHeight}` : "min-h-screen"} grid place-items-center bg-base-200`}
+        className={`${minHeight ? `min-h-${minHeight}` : "min-h-screen"} p-6 grid place-items-center bg-base-200`}
       >
         <div className="flex flex-col items-center space-y-4">
           <svg

@@ -24,8 +24,19 @@ export default function Checkout() {
   const handlePaystackSuccessAction = (reference) => {
     console.log(reference);
   };
-  const create_orders = () => {
-    pb.collection("users").authRefresh();
+  const create_orders = async () => {
+    await pb
+      .collection("users")
+      .authRefresh()
+      .catch((err) => {
+        if (err.status === 401) {
+          pb.authStore.clear();
+          toast.error("Please login to continue");
+          throw err;
+        }
+        toast.error(extract_message(err));
+        throw err;
+      });
     if (!user["user"]) {
       return toast.error("Please login to continue");
     }
@@ -108,14 +119,14 @@ export default function Checkout() {
           </li>
         </ul>
       </div>
-      <PaystackButton
+      {/*<PaystackButton
         text="Check Out"
         className="btn btn-primary btn-block"
         {...componentProps}
-      />
+      />*/}
       <button
         onClick={() => create_orders()}
-        className="btn btn-accent btn-block"
+        className="btn btn-primary btn-block"
       >
         Check Out
       </button>
