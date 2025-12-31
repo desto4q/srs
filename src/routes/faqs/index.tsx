@@ -1,4 +1,5 @@
 import PageContainer from "@/components/layouts/PageContainer";
+import PageFooter from "@/components/PageFooter";
 import PageHeader from "@/components/PageHeader";
 import { createFileRoute } from "@tanstack/react-router";
 
@@ -60,7 +61,9 @@ function RouteComponent() {
       <PageHeader />
       <div className="h-52 bg-base-300 w-full">
         <div className="container mx-auto px-4 h-full flex flex-col justify-center gap-2">
-          <h2 className="text-4xl font-bold">Frequently Asked Questions</h2>
+          <h2 className="text-2xl md:text-4xl font-bold">
+            Frequently Asked Questions
+          </h2>
           <p>Here are some frequently asked questions</p>
         </div>
       </div>
@@ -76,16 +79,17 @@ function RouteComponent() {
                 name="my-accordion-2"
                 defaultChecked={index === 0}
               />
-              <div className="collapse-title text-xl font-medium">
+              <div className="collapse-title md:text-xl font-medium">
                 {faq.question}
               </div>
-              <div className="collapse-content">
+              <div className="collapse-content text-sm md:text-base">
                 <p>{faq.answer}</p>
               </div>
             </div>
           ))}
         </div>
       </PageContainer>
+      <PageFooter />
     </>
   );
 }
