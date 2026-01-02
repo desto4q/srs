@@ -17,7 +17,7 @@ export default function PageHeader() {
           <AuthButtonHeader />
         </div>
         <label
-          htmlFor="my-drawer-3"
+          htmlFor="app-drawer"
           className="btn btn-square btn-ghost ring  fade ml-auto md:ml-0 md:hidden drawer-button lg:hidden"
         >
           <Menu />
