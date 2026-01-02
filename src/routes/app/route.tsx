@@ -10,7 +10,7 @@ export const Route = createFileRoute("/app")({
 function RouteComponent() {
   return (
     <>
-      <div className="drawer lg:drawer-open">
+      <div className="drawer ">
         <input id="app-drawer" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content ">
           <PageHeader />
