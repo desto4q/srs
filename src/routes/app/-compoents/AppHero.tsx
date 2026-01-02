@@ -1,6 +1,3 @@
-import React, { useCallback } from "react";
-import useEmblaCarousel from "embla-carousel-react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { pb } from "@/api/apiClient";
 import CompLoader from "@/components/layouts/ComponentLoader";
@@ -24,35 +21,36 @@ export default function AppHero() {
         {(data) => {
           return (
             <>
-              <div className="flex-1 container mx-auto grid lg:grid-cols-2 gap-4 px-4">
+              <div className="flex-1 container mx-auto grid lg:grid-cols-2 gap-12 px-4">
                 <div className="flex-col flex justify-center prose *:m-0 gap-6 ">
                   <h1 className="text-5xl">
-                    Elevate Your Style with Exquisite Items.
+                    Define Your Style with Our Fashion Accessories.
                   </h1>
                   <p>
-                    Explore our cultured collection of meticously crafted
-                    necklaces, designed to adorn your necklace with
-                    sophistication and grace
+                    Discover our diverse collection of meticulously curated
+                    fashion accessories for both men and women, designed to
+                    complement every look with sophistication and flair.
                   </p>
                   <div className="flex gap-2">
                     <button className="btn flex-1 btn-primary">
-                      Exlpore Now
+                      Shop Men's
                     </button>
                     <button className="btn btn-primary flex-1 btn-outline">
-                      Exlpore Now
+                      Shop Women's
                     </button>
                   </div>
                   {/*// collections*/}
                   <div className="p-6 **:m-0 ring rounded-box fade flex gap-4">
                     <div className="">
                       <h2>500+</h2>
-                      <p>Collections</p>
+                      <p>Styles</p>
                     </div>
                     <div className="divider divider-horizontal"></div>
                     <div>
                       <p>
-                        From Timeless classics to modern statement pieces. Find
-                        the perfect necklace for every occassion
+                        From timeless classics to modern statement pieces. Find
+                        the perfect accessory for every occasion and
+                        personality.
                       </p>
                     </div>
                   </div>
