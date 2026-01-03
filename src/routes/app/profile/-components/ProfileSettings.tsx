@@ -24,9 +24,15 @@ export default function ProfileSettings() {
     );
   }
   return (
-    <div className="ring p-4 rounded-box fade">
-      {/*<SimpleInput value={user.fullName} />*/}
-      {JSON.stringify(user)}
+    <div className="ring  rounded-box fade">
+      <div className="p-4 fade border-b font-bold text-current/80">
+        UserInfo
+      </div>
+      <div className="p-4 space-y-4">
+        <SimpleInput value={user.fullName} label="FullName" />
+        <SimpleInput value={user.email} label="Email" />
+      </div>
+      {/*{JSON.stringify(user, null, 2)}*/}
     </div>
   );
 }

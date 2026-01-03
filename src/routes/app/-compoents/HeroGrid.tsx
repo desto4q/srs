@@ -1,18 +1,50 @@
+import { pb } from "@/api/apiClient";
+import CompLoader from "@/components/layouts/ComponentLoader";
 import { get_image } from "@/helpers/client";
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import type { BannersResponse, ProductsRecord } from "pocketbase-types";
 
 export default function HeroGrid({ items }: { items: BannersResponse[] }) {
+  const query = useQuery<BannersResponse[]>({
+    queryKey: ["heroBanners"],
+    queryFn: async () => {
+      let resp = await pb.collection("banners").getFullList({
+        expand: "product_id",
+      });
+      return resp;
+    },
+  });
   return (
-    <div className="flex-1  grid md:grid-cols-2 gap-4">
-      <div className="bg-primary flex rounded-box">
-        <ImageCard item={items[0]} />
-      </div>
-      <div className="flex flex-col gap-4 rounded-box">
-        <ImageCard item={items[1]} />
-        <ImageCard item={items[2]} />
-      </div>
-    </div>
+    <CompLoader
+      query={query}
+      customLoading={
+        <div className="flex-1 grid md:grid-cols-2 gap-4">
+          <div className=" ring fade skeleton flex rounded-box"></div>
+          <div className="flex flex-col gap-4 rounded-box">
+            <div className=" ring fade skeleton flex-1 rounded-box"></div>
+            <div className=" ring fade skeleton flex-1 rounded-box"></div>
+          </div>
+        </div>
+      }
+    >
+      {(data) => {
+        const items = data || [];
+        return (
+          <>
+            <div className="flex-1  grid md:grid-cols-2 gap-4">
+              <div className="bg-primary flex rounded-box">
+                <ImageCard item={items[0]} />
+              </div>
+              <div className="flex flex-col gap-4 rounded-box">
+                <ImageCard item={items[1]} />
+                <ImageCard item={items[2]} />
+              </div>
+            </div>
+          </>
+        );
+      }}
+    </CompLoader>
   );
 }
 const ImageCard = ({

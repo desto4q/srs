@@ -62,6 +62,7 @@ function RouteComponent() {
               <SimpleInput
                 label="Password"
                 placeholder="Password"
+                type="password"
                 {...form.register("password", {
                   required: "Password is required",
                 })}
