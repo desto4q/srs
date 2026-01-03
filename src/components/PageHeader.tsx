@@ -16,7 +16,7 @@ export default function PageHeader() {
         <div className="ml-auto md:ml-0 space-x-2 hidden md:block">
           <AuthButtonHeader />
         </div>
-        <div className="ml-auto ml-auto md:ml-0 md:hidden  space-x-2">
+        <div className="ml-auto  md:ml-0 md:hidden  space-x-2">
           <Link to="/app/cart" className="btn btn-ghost btn-circle ">
             <ShoppingCart className="size-5" />
           </Link>

@@ -69,7 +69,7 @@ function RouteComponent() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-base-200">
-      <div className="card w-full max-w-md bg-base-100 shadow-xl p-8 space-y-6 ring fade">
+      <div className="card w-full max-w-md bg-base-100 shadow-xl p-8 space-y-6 ring fade mx-4">
         <div className="text-center space-y-2">
           <h2 className="text-2xl font-bold">Create Your Account</h2>
           <p className="text-sm text-gray-500">
@@ -78,7 +78,7 @@ function RouteComponent() {
         </div>
 
         <FormProvider {...methods}>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 ">
             <SimpleInput
               label="Full Name"
               placeholder="Enter your full name"

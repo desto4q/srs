@@ -23,7 +23,7 @@ const profile_links = [
   },
 
   {
-    path: "/app/logout",
+    path: "/auth/logout",
     label: "Logout",
   },
 ];

@@ -37,18 +37,10 @@ export default function AuthButtonHeader() {
               </Link>
             </li>
             <li>
-              <a>
-                <button
-                  className="flex items-center gap-2"
-                  onClick={() => {
-                    logout();
-                    console.log("clicked sos");
-                  }}
-                >
-                  <LogOut className="size-4" />
-                  logout
-                </button>
-              </a>
+              <Link to="/auth/logout()">
+                <LogOut className="size-4" />
+                logout
+              </Link>
             </li>
           </ul>
         </div>
