@@ -52,14 +52,12 @@ function RouteComponent() {
             return (
               <>
                 <EmptyList list={data.items} />
-                <ul className="space-y-4 menu w-full">
+                <ul className="space-y-4">
                   {data.items.map((item) => {
                     return (
                       <>
                         <li key={item.id}>
-                          <a className="flex p-0 rounded-box">
-                            <OrderCard item={item as any} />
-                          </a>
+                          <OrderCard item={item as any} />
                         </li>
                       </>
                     );

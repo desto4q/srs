@@ -104,13 +104,16 @@ interface DeliverySettingsProps {
   country: string | null;
 }
 
-const delivery_settings_atom = atom<DeliverySettingsProps>({
-  street: null,
-  city: null,
-  state: null,
-  country: null,
-  zip: null,
-});
+const delivery_settings_atom = atomWithStorage<DeliverySettingsProps>(
+  "delivery_settings",
+  {
+    street: null,
+    city: null,
+    state: null,
+    country: null,
+    zip: null,
+  },
+);
 
 export const useDeliverySettings = () => {
   const [deliverySettings, setDeliverySettings] = useAtom(

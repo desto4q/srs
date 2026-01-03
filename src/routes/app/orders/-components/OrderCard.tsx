@@ -1,7 +1,7 @@
 import { convert_to_array, get_image } from "@/helpers/client";
 import type { OptionsConfig, OrderType } from "@/types";
 import { Link } from "@tanstack/react-router";
-import type { OrdersRecord } from "pocketbase-types";
+import type { OrdersRecord, ProductsResponse } from "pocketbase-types";
 
 export default function OrderCard({
   item,
@@ -12,53 +12,54 @@ export default function OrderCard({
     item["productOptions"] as OptionsConfig,
   );
   const { arr } = options_array;
+  const img_url = get_image(
+    item["expand"].productId,
+    item["expand"].productId.images[0],
+  );
+  const options = arr.map((opt) => {
+    return {
+      name: opt["label"],
+      value: opt["values"][0]["label"],
+    };
+  });
+  const product_info = item["expand"].productId as ProductsResponse;
   return (
-    <Link
-      to={"/app/order/$orderId"}
-      params={{
-        //@ts-ignore
-        orderId: item.id,
-      }}
-      className="card flex-1  card-side  shadow-xl p-2 h-28 ring fade"
-    >
-      <figure className="aspect-square h-full rounded-box overflow-hidden">
-        <img
-          src={get_image(
-            //@ts-ignore
-            item.expand.productId,
-            //@ts-ignore
+    <Link to={`/app/order/${item.id}`}>
+      <div className="h-full ring fade rounded-box flex flex-col md:flex-row gap-4 p-2">
+        <div className="flex flex-1 md:items-center md:w-fit w-full flex-col md:flex-row gap-2">
+          <img
+            className="md:aspect-square h-26 w-full md:w-26 object-contain bg-base-200 rounded-box"
+            src={img_url}
+            alt=""
+          />
+          <div className="p-4 mt-2 md:mt-0 md:flex-1 h-full ring fade rounded-box">
+            <h2 className="font-bold text-base md:text-lg">
+              {product_info.name}
+            </h2>
+            <p className="text-sm md:text-base">Quantity: {item.quantity}</p>
+            <ul className="mt-1 ">
+              {options.map((option) => {
+                return (
+                  <li key={option.name} className="text-xs md:text-sm">
+                    {option.name}: {option.value}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </div>
 
-            item.expand.productId.images[0],
-          )}
-          className="w-full h-full object-cover"
-          alt={item["expand"]["productId"].name}
-        />
-      </figure>
-      <div className="card-body p-2 ml-2 flex flex-col justify-between border-r fade">
-        <h2 className="card-title text-base">
-          {item["expand"]["productId"].name}
-        </h2>
-        <div className="flex gap-2 flex-wrap">
-          {arr.map((opt, index) => {
-            return (
-              <span
-                key={index}
-                className="badge badge-info badge-outline badge-sm"
-              >
-                {opt["values"][0].label}
-              </span>
-            );
-          })}
-        </div>
-        <div className="text-sm">Quantity: {item.quantity}</div>
-      </div>
-      <div className="ml-auto flex flex-col justify-center items-end gap-1 p-2 ">
-        <h2 className="text-sm w-full">
-          <span>Price: </span>N {item.price}
-        </h2>
-        <div className="text-lg font-bold">
-          Total: N {item.price + item.deliveryFee}
-        </div>
+        {/*//pricing*/}
+        <section className="p-2">
+          <div className="ml-auto flex flex-col justify-center items-end gap-1">
+            <span className="text-xs md:text-sm ml-auto w-fit">
+              <span>Price: </span>N {item.price}
+            </span>
+            <span className="font-bold text-sm md:text-base">
+              Total: N {item.price + item.deliveryFee}
+            </span>
+          </div>
+        </section>
       </div>
     </Link>
   );
