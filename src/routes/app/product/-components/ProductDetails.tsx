@@ -97,8 +97,10 @@ export default function ProductDetails({
           NGN {(computed_price * quantity).toLocaleString()}
         </p>
       </div>
-      <div className="p-4 bg-base-100 ring fade rounded-md shadow">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <div className=" bg-base-100 ring fade rounded-md shadow">
+        <h2 className="p-4 border-b font-bold text-current/80 fade">Options</h2>
+        {/*<div className="bg-[beige] p-4">s</div>*/}
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4">
           <>
             {option_keys.map((key) => {
               const currentOption = options[key];
@@ -111,13 +113,11 @@ export default function ProductDetails({
                     render={({ field }) => {
                       return (
                         <div className="form-control w-full">
-                          <label className="label">
-                            <span className="label-text capitalize font-bold">
-                              {currentOption.label}
-                            </span>
-                          </label>
+                          <span className="fieldset-label capitalize font-bold mb-2">
+                            {currentOption.label}
+                          </span>
                           <select
-                            className="select select-bordered w-full"
+                            className="select select-bordered w-full space-y-2 "
                             defaultValue=""
                             onChange={(e) => {
                               const selectedIndex = parseInt(e.target.value);
@@ -126,7 +126,7 @@ export default function ProductDetails({
                               );
                             }}
                           >
-                            <option disabled value="">
+                            <option disabled value="" className="">
                               Pick your {currentOption.label}
                             </option>
                             {currentOption.values.map((optionValue, index) => (

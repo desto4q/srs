@@ -26,13 +26,13 @@ export default function OrderCard({
   return (
     <Link to={`/app/order/${item.id}`}>
       <div className="h-full ring fade rounded-box flex flex-col md:flex-row gap-4 p-2">
-        <div className="flex flex-1 md:items-center md:w-fit w-full flex-col md:flex-row gap-2">
+        <div className="flex flex-1 md:items-center md:w-fit w-full  gap-2">
           <img
-            className="md:aspect-square h-26 w-full md:w-26 object-contain bg-base-200 rounded-box"
+            className="md:aspect-square size-26 object-contain bg-base-200 rounded-box"
             src={img_url}
             alt=""
           />
-          <div className="p-4 mt-2 md:mt-0 md:flex-1 h-full ring fade rounded-box">
+          <div className=" h-full ">
             <h2 className="font-bold text-base md:text-lg">
               {product_info.name}
             </h2>

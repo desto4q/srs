@@ -4,6 +4,7 @@ import type { CartItem } from "@/types";
 
 export default function CartListItem({ item }: { item: CartItem }) {
   const { remove_from_cart } = useCartStore();
+  const hasItems = Object.keys(item.options).length > 0;
   return (
     <>
       <div
@@ -20,18 +21,23 @@ export default function CartListItem({ item }: { item: CartItem }) {
         {/*item details*/}
         <div className="flex-grow flex flex-col justify-between">
           <div className="flex flex-col gap-2">
-            <h2 className="text-2xl font-bold">{item.name}</h2>
-            {Object.entries(item.options).map(([key, option]) => (
-              <p key={key} className="text-sm">
-                <span className="font-semibold capitalize">{key}</span>:{" "}
-                {option.values[0].label}
-              </p>
-            ))}
+            <h2 className="text-2xl font-bold text-base-content">
+              {item.name}
+            </h2>
+            {hasItems &&
+              Object.entries(item.options).map(([key, option]) => (
+                <p key={key} className="text-sm text-base-content/70">
+                  <span className="font-semibold capitalize text-base-content">
+                    {key}
+                  </span>
+                  : {option.values[0].label}
+                </p>
+              ))}
           </div>
-          <div className="flex flex-col lg:flex-row gap-2  lg:items-center justify-between mt-4">
+          <div className="flex flex-col lg:flex-row gap-2  lg:items-center justify-between ">
             <QuantityInput id={item.id} quantity={item.quantity} />
-            <div className="text-lg font-bold">
-              <span>NGN</span>{" "}
+            <div className="text-lg font-bold text-primary">
+              <span className="text-base-content/50 text-sm">NGN</span>{" "}
               {compute_total_price(
                 item.price,
                 item.options,
@@ -45,12 +51,12 @@ export default function CartListItem({ item }: { item: CartItem }) {
               onClick={() => {
                 console.log(item);
               }}
-              className="btn btn-link btn-sm p-0 h-auto min-h-0"
+              className="btn btn-link btn-sm p-0 h-auto min-h-0 text-secondary hover:text-secondary-focus"
             >
               Move to Favorites
             </button>
             <button
-              className="btn btn-link btn-sm p-0 h-auto min-h-0"
+              className="btn btn-link btn-sm p-0 h-auto min-h-0 text-error hover:text-error-focus"
               onClick={() => remove_from_cart(item.id)}
             >
               Remove
