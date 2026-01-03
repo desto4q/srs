@@ -54,7 +54,7 @@ function RouteComponent() {
 
   return (
     <>
-      <div className="h-20 fade border-b p-4 flex items-center">
+      <div className="h-20 fade border-b p-4 flex container mx-auto items-center">
         <SearchBar />
         <label
           htmlFor="products-drawer"
