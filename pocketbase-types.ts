@@ -13,6 +13,7 @@ export enum Collections {
 	Superusers = "_superusers",
 	Banners = "banners",
 	Categories = "categories",
+	DeliverySettings = "deliverySettings",
 	Orders = "orders",
 	Products = "products",
 	Users = "users",
@@ -113,6 +114,18 @@ export type CategoriesRecord = {
 	updated: IsoAutoDateString
 }
 
+export type DeliverySettingsRecord = {
+	city?: string
+	country?: string
+	created: IsoAutoDateString
+	id: string
+	state?: string
+	street?: string
+	updated: IsoAutoDateString
+	user_id?: RecordIdString
+	zip?: string
+}
+
 export type OrdersRecord<TproductOptions = unknown> = {
 	created: IsoAutoDateString
 	deliveryFee?: number
@@ -162,6 +175,7 @@ export type OtpsResponse<Texpand = unknown> = Required<OtpsRecord> & BaseSystemF
 export type SuperusersResponse<Texpand = unknown> = Required<SuperusersRecord> & AuthSystemFields<Texpand>
 export type BannersResponse<Texpand = unknown> = Required<BannersRecord> & BaseSystemFields<Texpand>
 export type CategoriesResponse<Texpand = unknown> = Required<CategoriesRecord> & BaseSystemFields<Texpand>
+export type DeliverySettingsResponse<Texpand = unknown> = Required<DeliverySettingsRecord> & BaseSystemFields<Texpand>
 export type OrdersResponse<TproductOptions = unknown, Texpand = unknown> = Required<OrdersRecord<TproductOptions>> & BaseSystemFields<Texpand>
 export type ProductsResponse<Toptions = unknown, Texpand = unknown> = Required<ProductsRecord<Toptions>> & BaseSystemFields<Texpand>
 export type UsersResponse<Texpand = unknown> = Required<UsersRecord> & AuthSystemFields<Texpand>
@@ -176,6 +190,7 @@ export type CollectionRecords = {
 	_superusers: SuperusersRecord
 	banners: BannersRecord
 	categories: CategoriesRecord
+	deliverySettings: DeliverySettingsRecord
 	orders: OrdersRecord
 	products: ProductsRecord
 	users: UsersRecord
@@ -189,6 +204,7 @@ export type CollectionResponses = {
 	_superusers: SuperusersResponse
 	banners: BannersResponse
 	categories: CategoriesResponse
+	deliverySettings: DeliverySettingsResponse
 	orders: OrdersResponse
 	products: ProductsResponse
 	users: UsersResponse

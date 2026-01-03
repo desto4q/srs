@@ -135,3 +135,10 @@ export const useDeliverySettings = () => {
     updateDeliverySettings,
   };
 };
+
+export const validate_addr = (data: DeliverySettingsProps) => {
+  const { street, city, state, zip, country } = data;
+  const isValid = Object.keys(data).every((key) => data[key] !== null);
+  const full_address = `${street}, ${city}, ${state}, ${country}, ${zip}`;
+  return { isValid, full_address };
+};

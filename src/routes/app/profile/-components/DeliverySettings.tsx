@@ -1,34 +1,83 @@
+import { pb } from "@/api/apiClient";
 import SimpleInput from "@/components/inputs/SimpleInput";
-import { validateItems } from "@/helpers/client";
+import { useUser, validateItems } from "@/helpers/client";
 import { useDeliverySettings } from "@/store/client";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 export default function DeliverySettings() {
-  const {
-    isValid,
-    state,
-    street,
-    city,
-    country,
-    zip,
-    full_address,
-    updateDeliverySettings,
-  } = useDeliverySettings();
+  const { user } = useUser();
+  const defaultDeliverySettings = {
+    user: user.id,
+    street: "",
+    city: "",
+    state: "",
+    country: "",
+    zip: "",
+  };
+  const query = useQuery({
+    queryKey: ["delvierySettings"],
+    queryFn: () =>
+      pb
+        .collection("deliverySettings")
+        .getOne(user.id)
+        .catch((stat) => {
+          if (stat.status === 404) {
+            pb.collection("deliverySettings").create({
+              id: user.id,
+              user: user.id,
+              street: "",
+              city: "",
+              state: "",
+              country: "",
+              zip: "",
+            });
+            return defaultDeliverySettings;
+          }
+          throw stat;
+        }),
+    enabled: !!user,
+    placeholderData: defaultDeliverySettings,
+    initialData: defaultDeliverySettings,
+  });
+  const mutation = useMutation({
+    mutationFn: async (data: any) => {
+      await pb.collection("deliverySettings").update(user.id, data);
+    },
+  });
+
+  useEffect(() => {
+    if (query.data) {
+      const data = query.data;
+      form.reset({
+        street: data.street,
+        city: data.city,
+        state: data.state,
+        country: data.country,
+        zip: data.zip,
+      });
+    }
+  }, [query.data]);
   const form = useForm({
     defaultValues: {
-      street: street,
-      city: city,
-      state: state,
-      country: country,
-      zip: zip,
+      street: "",
+      city: "",
+      state: "",
+      country: "",
+      zip: "",
     },
   });
   const onSubmit = (data: Record<string, any>) => {
     const isValid = validateItems(data);
+    // return console.log(data);
     if (isValid) {
-      toast.success("Delivery Settings Updated");
-      return updateDeliverySettings(data as any);
+      return toast.promise(mutation.mutateAsync(data), {
+        loading: "Updating...",
+        success: "Delivery Settings Updated",
+        error: "Error Updating Delivery Settings",
+      });
     }
     return toast.error("Not Complete/Valid");
   };
@@ -37,8 +86,12 @@ export default function DeliverySettings() {
       onSubmit={form.handleSubmit(onSubmit)}
       className="ring  fade rounded-box"
     >
-      <div className="p-4 border-b font-bold text-current/80 fade">
+      <div className="p-4 border-b font-bold text-current/80 fade flex">
         Delivery Settings
+        {query.isFetching && (
+          <span className="loading loading-spinner ml-auto text-primary"></span>
+        )}
+        {query.isError && <span className="text-error ml-auto">Error</span>}
       </div>
       <div className="p-4 space-y-4">
         <FormProvider {...form}>
@@ -48,9 +101,7 @@ export default function DeliverySettings() {
           <SimpleInput {...form.register("country")} label="Country" />
           <SimpleInput {...form.register("zip")} label="Zip" />
         </FormProvider>
-        {isValid && (
-          <div className="p-4 ring fade rounded-md shadow">{full_address}</div>
-        )}
+
         <button className="btn btn-sm btn-primary btn-block ">Submit</button>
       </div>
     </form>
