@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import type { BannersResponse, ProductsRecord } from "pocketbase-types";
 
-export default function HeroGrid({ items }: { items: BannersResponse[] }) {
+export default function HeroGrid() {
   const query = useQuery<BannersResponse[]>({
     queryKey: ["heroBanners"],
     queryFn: async () => {

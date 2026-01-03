@@ -1,7 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
-import { pb } from "@/api/apiClient";
-import CompLoader from "@/components/layouts/ComponentLoader";
-import type { BannersResponse } from "pocketbase-types";
+import { Link } from "@tanstack/react-router";
 import HeroGrid from "./HeroGrid";
 
 export default function AppHero() {
@@ -19,18 +16,23 @@ export default function AppHero() {
               look with sophistication and flair.
             </p>
             <div className="flex gap-2">
-              <button className="btn flex-1 btn-primary">Shop Men's</button>
-              <button className="btn btn-primary flex-1 btn-outline">
-                Shop Women's
-              </button>
+              <Link to="/app/products" className="btn flex-1 btn-primary">
+                Explore Store
+              </Link>
+              <Link
+                to="/app/faq"
+                className="btn btn-neutral flex-1 btn-outline"
+              >
+                More Info
+              </Link>
             </div>
             {/*// collections*/}
-            <div className="p-6 **:m-0 ring rounded-box fade flex gap-4 !mt-8">
-              <div className="">
-                <h2>500+</h2>
+            <div className="p-6 **:m-0 ring rounded-box fade flex gap-4 !mt-8 flex-col md:flex-row">
+              <div className="self-center md:self-start flex gap-2 md:gap-0 items-center md:flex-col md:items-start">
+                <h2 className="text-5xl md:text-2xl font-bold">500+</h2>
                 <p>Styles</p>
               </div>
-              <div className="divider divider-horizontal"></div>
+              <div className="divider md:divider-horizontal"></div>
               <div>
                 <p>
                   From timeless classics to modern statement pieces. Find the
