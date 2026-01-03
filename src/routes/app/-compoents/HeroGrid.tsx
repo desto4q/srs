@@ -32,15 +32,15 @@ const ImageCard = ({
         alt=""
       />
       <div className="m-1 absolute bottom-0 ring fade p-4 z-10 bg-base-100/80 backdrop-blur-md left-0 right-0 rounded-box flex">
-        <div>
+        <div className="flex-1">
           <h2 className="text-sm font-bold line-clamp-1">{item.title}</h2>
           <p className="line-clamp-1 text-xs">
             {item.expand["product_id"].description}
           </p>
         </div>
         <span className="divider  divider-horizontal"></span>
-        <p className="text-xs self-center ml-auto ">
-          <span className="">
+        <p className="self-center ml-auto flex-1 max-w-fit">
+          <span className="text-base font-bold">
             N {item.expand["product_id"]?.price?.toLocaleString()}
           </span>
         </p>
