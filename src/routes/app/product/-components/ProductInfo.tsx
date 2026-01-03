@@ -83,7 +83,7 @@ export default function ProductInfo({
           </button>
         ))}
       </div>
-      <div className="hidden">
+      <div className="md:hidden">
         <ProductDetails item={item} />
       </div>
       <ProductReviews />

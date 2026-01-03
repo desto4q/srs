@@ -39,9 +39,11 @@ export default function Card(props: { item: ProductsResponse }) {
             New In
           </span>
         </div>
-        <h2 className="text-xl font-bold ">{item.name || "Product Name"} </h2>{" "}
+        <h2 className="text-xl font-bold line-clamp-1">
+          {item.name || "Product Name"}{" "}
+        </h2>{" "}
         {/* Use item.name */}
-        <p className="text-base-content/80 line-clamp-3 h-20">
+        <p className="text-base-content/80 line-clamp-3 min-h-20 text-sm">
           {item.description || "No description available."}{" "}
           {/* Use item.description */}
         </p>
