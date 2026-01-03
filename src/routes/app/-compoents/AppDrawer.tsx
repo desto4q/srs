@@ -1,3 +1,4 @@
+import { useUser } from "@/helpers/client";
 import { Link } from "@tanstack/react-router";
 
 const links = [
@@ -28,6 +29,7 @@ const profile_links = [
   },
 ];
 export default function AppDrawer() {
+  const { user } = useUser();
   return (
     <div className="flex-1 space-y-2 flex-col flex">
       <h2 className="h-20 border-b fade flex items-center px-4 text-xl font-bold">
@@ -43,11 +45,19 @@ export default function AppDrawer() {
         </li>
       </div>
       <div className="mt-auto px-4 menu">
-        {profile_links.map((link) => (
-          <li key={link.path}>
-            <Link to={link.path}>{link.label}</Link>
+        {user ? (
+          <>
+            {profile_links.map((link) => (
+              <li key={link.path}>
+                <Link to={link.path}>{link.label}</Link>
+              </li>
+            ))}
+          </>
+        ) : (
+          <li>
+            <Link to="/auth/login">Login</Link>
           </li>
-        ))}
+        )}
       </div>
     </div>
   );

@@ -2,7 +2,9 @@ export default function PageFooter() {
   return (
     <div className="bg-neutral text-neutral-content py-12">
       <footer className="container mx-auto p-4  divide-y *:py-4 *:fade">
-        <h2 className="text-4xl font-bold pr-4">StuffsAreUs</h2>
+        <h2 className="text-4xl font-bold pr-4 font-lobster-two">
+          StuffsAreUs
+        </h2>
         <div className="flex gap-4 text-sm text-current/70">
           <a href="#" className="link link-hover">
             Terms

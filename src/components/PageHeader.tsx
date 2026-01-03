@@ -7,9 +7,9 @@ export default function PageHeader() {
   return (
     <div className="h-16 border-b fade ">
       <nav className="container mx-auto px-4 flex h-full items-center gap-2">
-        <Link to="/" className="btn  btn-ghost ">
-          <span className="md:hidden">SRU</span>
-          <span className="hidden md:inline">StuffsAreUs</span>
+        <Link to="/" className="btn  btn-ghost font-lobster-two">
+          <span className="md:hidden text-xl font-bold">SRU</span>
+          <span className="hidden md:inline text-xl">StuffsAreUs</span>
         </Link>
 
         <HeaderLinks />
