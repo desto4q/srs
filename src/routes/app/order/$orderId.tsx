@@ -74,8 +74,9 @@ function RouteComponent() {
                       </p>
                     )}*/}
                   </div>
-                  <p className="text-sm text-gray-600">
-                    Quantity: {product.quantity}
+                  <p className="text-current/80 text-lg font-bold">
+                    Quantity:
+                    <span className="text-info"> {data.quantity} Items</span>
                   </p>
                   {product.options && (
                     <div className="mt-4">
