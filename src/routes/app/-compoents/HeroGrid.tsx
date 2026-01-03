@@ -10,7 +10,7 @@ export default function HeroGrid({ items }: { items: BannersResponse[] }) {
       </div>
       <div className="flex flex-col gap-4 rounded-box">
         <ImageCard item={items[1]} />
-        <ImageCard item={items[1]} />
+        <ImageCard item={items[2]} />
       </div>
     </div>
   );

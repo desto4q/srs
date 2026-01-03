@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Menu } from "lucide-react";
+import { Menu, ShoppingCart } from "lucide-react";
 import AuthButtonHeader from "./AuthButtonHeader";
 import HeaderLinks from "./HeaderLinks";
 
@@ -16,12 +16,17 @@ export default function PageHeader() {
         <div className="ml-auto md:ml-0 space-x-2 hidden md:block">
           <AuthButtonHeader />
         </div>
-        <label
-          htmlFor="app-drawer"
-          className="btn btn-square btn-ghost ring  fade ml-auto md:ml-0 md:hidden drawer-button lg:hidden"
-        >
-          <Menu />
-        </label>
+        <div className="ml-auto ml-auto md:ml-0 md:hidden  space-x-2">
+          <Link to="/app/cart" className="btn btn-ghost btn-circle ">
+            <ShoppingCart className="size-5" />
+          </Link>
+          <label
+            htmlFor="app-drawer"
+            className="btn btn-square btn-ghost ring  fade drawer-button lg:hidden"
+          >
+            <Menu />
+          </label>
+        </div>
       </nav>
     </div>
   );
