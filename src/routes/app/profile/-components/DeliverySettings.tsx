@@ -70,7 +70,17 @@ const DeliveryForm = ({
   });
   const mutation = useMutation({
     mutationFn: async (data: any) => {
-      await pb.collection("deliverySettings").update(user.id, data);
+      await pb
+        .collection("deliverySettings")
+        .update(user.id, { ...data, user_id: user.id, id: user.id })
+        .catch(async (err) => {
+          if (err.status === 404) {
+            return await pb
+              .collection("deliverySettings")
+              .create({ ...data, user_id: user.id, id: user.id });
+          }
+          throw err;
+        });
     },
   });
 
