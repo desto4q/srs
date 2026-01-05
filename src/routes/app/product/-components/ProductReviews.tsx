@@ -4,10 +4,15 @@ import Modal from "@/components/modals/DialogModal";
 import { extract_message } from "@/helpers/api";
 import { useUser } from "@/helpers/client";
 import { useModal } from "@/helpers/modals";
-import type { ReviewsResponse, UsersResponse } from "pocketbase-types";
+import type {
+  ReviewCountResponse,
+  ReviewsResponse,
+  UsersResponse,
+} from "pocketbase-types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import CompLoader from "@/components/layouts/ComponentLoader";
 
 export default function ProductReviews({ productId }: { productId: string }) {
   const { user } = useUser();
@@ -46,13 +51,6 @@ export default function ProductReviews({ productId }: { productId: string }) {
     },
   });
   const modal = useModal();
-
-  const averageRating = reviews.data?.length
-    ? (
-        reviews.data.reduce((acc, rev) => acc + (rev.rating || 0), 0) /
-        reviews.data.length
-      ).toFixed(1)
-    : "0.0";
 
   return (
     <>
@@ -110,35 +108,10 @@ export default function ProductReviews({ productId }: { productId: string }) {
           )}
         </div>
 
-        <div className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-10">
-            <div className="md:col-span-4 flex flex-col items-center justify-center bg-base-200/50 rounded-2xl p-6 border border-base-300">
-              <span className="text-6xl font-black text-primary">
-                {averageRating}
-              </span>
-              <div className="rating rating-sm my-2 pointer-events-none">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <input
-                    key={star}
-                    type="radio"
-                    className="mask mask-star-2 bg-orange-400"
-                    checked={Math.round(Number(averageRating)) === star}
-                    readOnly
-                  />
-                ))}
-              </div>
-              <span className="text-base-content/60 text-sm font-medium">
-                Based on {reviews.data?.length || 0} reviews
-              </span>
-            </div>
-
-            <div className="md:col-span-8 flex flex-col justify-center">
-              <RatingDistribution reviews={reviews.data || []} />
-            </div>
-          </div>
-
+        <div className="p-4  space-y-4">
+          <RatingDistribution id={productId} />
           <div className="space-y-4">
-            {reviews.data?.map((review) => (
+            {reviews.data?.items?.map((review) => (
               <div
                 key={review.id}
                 className="p-5 rounded-2xl bg-base-100 border border-base-200 shadow-sm flex gap-4 transition-all hover:border-primary/30 ring fade"
@@ -183,7 +156,7 @@ export default function ProductReviews({ productId }: { productId: string }) {
               </div>
             ))}
 
-            {reviews.data?.length === 0 && (
+            {reviews.data?.items.length === 0 && (
               <div className="text-center py-12 bg-base-200/20 rounded-xl border-2 border-dashed border-base-300">
                 <p className="text-base-content/40 font-medium">
                   No reviews yet. Be the first to share your thoughts!
@@ -197,30 +170,73 @@ export default function ProductReviews({ productId }: { productId: string }) {
   );
 }
 
-const RatingDistribution = ({ reviews }: { reviews: any[] }) => {
-  const counts = [5, 4, 3, 2, 1].map((rating) => ({
-    rating,
-    count: reviews.filter((r) => Math.round(r.rating) === rating).length,
-    percentage: reviews.length
-      ? (reviews.filter((r) => Math.round(r.rating) === rating).length /
-          reviews.length) *
-        100
-      : 0,
-  }));
+const RatingDistribution = ({ id }: { id: string }) => {
+  const query = useQuery({
+    queryKey: ["reviews_count", id],
+    queryFn: () =>
+      pb
+        .collection("review_count")
+        .getFirstListItem<ReviewCountResponse>(`product_id = "${id}"`),
+    enabled: !!id,
+  });
 
   return (
-    <div className="space-y-2 w-full max-w-md">
-      {counts.map(({ rating, count, percentage }) => (
-        <div key={rating} className="flex items-center gap-4">
-          <span className="text-xs font-bold w-3">{rating}</span>
-          <progress
-            className="progress progress-primary flex-1 h-2"
-            value={percentage}
-            max="100"
-          ></progress>
-          <span className="text-xs opacity-50 w-8 text-right">{count}</span>
-        </div>
-      ))}
-    </div>
+    <CompLoader query={query}>
+      {(data) => {
+        const total = data.total_reviews || 0;
+        const distribution = [
+          { rating: 5, count: data.rating_5 || 0 },
+          { rating: 4, count: data.rating_4 || 0 },
+          { rating: 3, count: data.rating_3 || 0 },
+          { rating: 2, count: data.rating_2 || 0 },
+          { rating: 1, count: data.rating_1 || 0 },
+        ];
+
+        return (
+          <div className="flex flex-col sm:flex-row items-center gap-4  py-4">
+            <div className="text-center ring p-6 rounded-box fade">
+              <div className="text-5xl font-black text-primary mb-1">
+                {Number(data.average_rating || 0).toFixed(1)}
+              </div>
+              <div className="rating rating-sm pointer-events-none mb-2">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <input
+                    key={star}
+                    type="radio"
+                    className="mask mask-star-2 bg-orange-400"
+                    checked={
+                      Math.round(Number(data.average_rating || 0)) === star
+                    }
+                    readOnly
+                  />
+                ))}
+              </div>
+              <div className="text-xs opacity-50 font-bold uppercase tracking-wider">
+                {total} Reviews
+              </div>
+            </div>
+
+            <div className="space-y-2 flex-1 ring p-4 fade rounded-box ">
+              {distribution.map(({ rating, count }) => {
+                const percentage = total > 0 ? (count / total) * 100 : 0;
+                return (
+                  <div key={rating} className="flex items-center gap-4">
+                    <span className="text-xs font-bold w-3">{rating}</span>
+                    <progress
+                      className="progress progress-primary flex-1 h-2"
+                      value={percentage}
+                      max="100"
+                    ></progress>
+                    <span className="text-xs opacity-50 w-8 text-right">
+                      {count}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      }}
+    </CompLoader>
   );
 };
