@@ -9,13 +9,14 @@ import type {
   ReviewsResponse,
   UsersResponse,
 } from "pocketbase-types";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import CompLoader from "@/components/layouts/ComponentLoader";
 
 export default function ProductReviews({ productId }: { productId: string }) {
   const { user } = useUser();
+  const queryClient = useQueryClient();
   const form = useForm({
     defaultValues: {
       rating: 5,
@@ -46,6 +47,7 @@ export default function ProductReviews({ productId }: { productId: string }) {
     },
     onSuccess: () => {
       reviews.refetch();
+      queryClient.invalidateQueries({ queryKey: ["reviews_count", productId] });
       modal.closeModal();
       form.reset();
     },
@@ -193,8 +195,8 @@ const RatingDistribution = ({ id }: { id: string }) => {
         ];
 
         return (
-          <div className="flex flex-col sm:flex-row items-center gap-4  py-4">
-            <div className="text-center ring p-6 rounded-box fade">
+          <div className="flex flex-col md:flex-row sm:items-center gap-4  py-4">
+            <div className="text-center ring p-6 rounded-box fade flex-1 md:max-w-3xs">
               <div className="text-5xl font-black text-primary mb-1">
                 {Number(data.average_rating || 0).toFixed(1)}
               </div>
