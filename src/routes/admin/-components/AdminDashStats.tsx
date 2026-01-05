@@ -11,7 +11,7 @@ export default function AdminDashStats() {
   });
 
   return (
-    <div className="p-6 bg-base-200/50 rounded-box border border-base-content/5 shadow-sm">
+    <div className="p-6  ring fade rounded-box  shadow bg-base-200/50  ">
       <div className="mb-4">
         <h2 className="text-lg font-bold opacity-70 uppercase tracking-wider">
           Order Overview
@@ -20,7 +20,7 @@ export default function AdminDashStats() {
       <CompLoader query={query}>
         {(data) => {
           return (
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div className="grid  grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
               <StatCard
                 item={data.pending}
                 name="Pending"
