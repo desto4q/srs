@@ -49,7 +49,7 @@ export default function AppDrawer() {
           <>
             {profile_links.map((link) => (
               <li key={link.path}>
-                <Link to={link.path}>{link.label}</Link>
+                <a href={link.path}>{link.label}</a>
               </li>
             ))}
           </>

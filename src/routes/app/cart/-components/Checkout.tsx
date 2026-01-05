@@ -6,26 +6,67 @@ import {
   compute_total_price,
   useUser,
 } from "@/helpers/client";
-import { useCartStore, useDeliverySettings } from "@/store/client";
+import { useCartStore, validate_addr } from "@/store/client";
 import type { CartItemOption, OrderType } from "@/types";
-import { PaystackButton } from "react-paystack";
 import { toast } from "sonner";
 
 import { usePaystackPayment } from "react-paystack";
 import { extract_message } from "@/helpers/api";
-import type { OrdersRecord } from "pocketbase-types";
+import { useQuery } from "@tanstack/react-query";
+
+const defaultDeliverySettings = {
+  street: "",
+  city: "",
+  state: "",
+  country: "",
+  zip: "",
+};
 export default function Checkout() {
-  const { isValid } = useDeliverySettings();
+  const { user } = useUser();
+  const query = useQuery({
+    queryKey: ["delvierySettings"],
+    queryFn: () =>
+      pb
+        .collection("deliverySettings")
+        .getOne(user.id)
+        .catch((stat) => {
+          if (stat.status === 404) {
+            pb.collection("deliverySettings").create({
+              id: user.id,
+              user_id: user.id,
+              street: "",
+              city: "",
+              state: "",
+              country: "",
+              zip: "",
+            });
+            return defaultDeliverySettings;
+          }
+          throw stat;
+        }),
+    enabled: !!user,
+    placeholderData: defaultDeliverySettings,
+    initialData: defaultDeliverySettings,
+  });
+  const data = query.data;
+  const { isValid, full_address } = validate_addr({
+    state: data.state,
+    street: data.street,
+    city: data.city,
+    country: data.country,
+    zip: data.zip,
+  });
   const initialize = usePaystackPayment(null);
-  const user = useUser();
   const props = useCartStore();
   const deliveryFee = 3374;
   const total = calculate_cart_total(props.cart) + deliveryFee;
   const config = create_config(total, "desto4q@gmail.com");
-  const handlePaystackSuccessAction = (reference) => {
-    console.log(reference);
-  };
+
   const create_orders = async () => {
+    if (query.isError) {
+      query.refetch();
+      return toast.error("Failed to fetch delivery details");
+    }
     if (!isValid) return toast.error("Please fill in your delivery details");
     await pb
       .collection("users")
@@ -39,14 +80,14 @@ export default function Checkout() {
         toast.error(extract_message(err));
         throw err;
       });
-    if (!user["user"]) {
+    if (!user) {
       return toast.error("Please login to continue");
     }
     const orders = props.cart_array.map((item) => {
       const order = {
         productId: item.id,
         productOptions: item.options,
-        userId: user["user"].id as string,
+        userId: user.id as string,
         refId: config.reference,
         price:
           compute_total_price(item.price, item.options, item.quantity) +
@@ -79,15 +120,7 @@ export default function Checkout() {
     });
   };
   // you can call this function anything
-  const handlePaystackCloseAction = () => {
-    console.log("closed");
-  };
-  const componentProps = {
-    ...config,
-    text: "Check Out",
-    onSuccess: (reference) => handlePaystackSuccessAction(reference),
-    onClose: handlePaystackCloseAction,
-  };
+
   return (
     <div className="p-4 ring fade rounded-box space-y-4">
       <h2 className="text-xl font-bold">Total</h2>
@@ -121,16 +154,19 @@ export default function Checkout() {
           </li>
         </ul>
       </div>
-      {/*<PaystackButton
-        text="Check Out"
-        className="btn btn-primary btn-block"
-        {...componentProps}
-      />*/}
       <button
+        disabled={query.isLoading || query.isError}
         onClick={() => create_orders()}
         className="btn btn-primary btn-block"
       >
-        Check Out
+        {query.isLoading ? (
+          <div className="flex items-center justify-center">
+            <span className="loading ml-2"></span>
+            <span>Loading...</span>
+          </div>
+        ) : (
+          "Check Out"
+        )}
       </button>
       <DeliveryInfo />
     </div>

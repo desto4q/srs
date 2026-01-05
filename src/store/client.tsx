@@ -131,14 +131,16 @@ export const useDeliverySettings = () => {
   return {
     ...deliverySettings,
     isValid,
+    deliverySettings,
     full_address,
     updateDeliverySettings,
   };
 };
-
 export const validate_addr = (data: DeliverySettingsProps) => {
   const { street, city, state, zip, country } = data;
-  const isValid = Object.keys(data).every((key) => data[key] !== null);
+  const isValid = Object.values(data).every(
+    (value) => value !== null && value !== "",
+  );
   const full_address = `${street}, ${city}, ${state}, ${country}, ${zip}`;
   return { isValid, full_address };
 };
