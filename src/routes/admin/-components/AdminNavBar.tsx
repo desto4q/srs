@@ -2,8 +2,8 @@ import { Search, Bell, ChevronDown, Menu } from "lucide-react";
 
 export default function AdminNavBar() {
   return (
-    <nav className="border-b fade">
-      <div className="navbar bg-base-100 px-4 h-20 fade container mx-auto">
+    <nav className="border-b fade h-20">
+      <div className="navbar bg-base-100 px-4 h-full fade container mx-auto">
         <div className="flex-1">
           <h1 className="text-2xl font-bold text-current/80">Overview</h1>
         </div>
