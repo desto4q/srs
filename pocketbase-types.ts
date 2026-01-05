@@ -16,6 +16,8 @@ export enum Collections {
 	DeliverySettings = "deliverySettings",
 	Orders = "orders",
 	Products = "products",
+	ReviewCount = "review_count",
+	Reviews = "reviews",
 	Users = "users",
 }
 
@@ -154,6 +156,28 @@ export type ProductsRecord<Toptions = unknown> = {
 	updated: IsoAutoDateString
 }
 
+export type ReviewCountRecord<Taverage_rating = unknown> = {
+	average_rating?: null | Taverage_rating
+	id: string
+	product_id?: RecordIdString
+	rating_1?: number
+	rating_2?: number
+	rating_3?: number
+	rating_4?: number
+	rating_5?: number
+	total_reviews?: number
+}
+
+export type ReviewsRecord = {
+	created: IsoAutoDateString
+	id: string
+	product_id?: RecordIdString
+	rating?: number
+	review?: string
+	updated: IsoAutoDateString
+	user_id?: RecordIdString
+}
+
 export type UsersRecord = {
 	avatar?: FileNameString
 	created: IsoAutoDateString
@@ -178,6 +202,8 @@ export type CategoriesResponse<Texpand = unknown> = Required<CategoriesRecord> &
 export type DeliverySettingsResponse<Texpand = unknown> = Required<DeliverySettingsRecord> & BaseSystemFields<Texpand>
 export type OrdersResponse<TproductOptions = unknown, Texpand = unknown> = Required<OrdersRecord<TproductOptions>> & BaseSystemFields<Texpand>
 export type ProductsResponse<Toptions = unknown, Texpand = unknown> = Required<ProductsRecord<Toptions>> & BaseSystemFields<Texpand>
+export type ReviewCountResponse<Taverage_rating = unknown, Texpand = unknown> = Required<ReviewCountRecord<Taverage_rating>> & BaseSystemFields<Texpand>
+export type ReviewsResponse<Texpand = unknown> = Required<ReviewsRecord> & BaseSystemFields<Texpand>
 export type UsersResponse<Texpand = unknown> = Required<UsersRecord> & AuthSystemFields<Texpand>
 
 // Types containing all Records and Responses, useful for creating typing helper functions
@@ -193,6 +219,8 @@ export type CollectionRecords = {
 	deliverySettings: DeliverySettingsRecord
 	orders: OrdersRecord
 	products: ProductsRecord
+	review_count: ReviewCountRecord
+	reviews: ReviewsRecord
 	users: UsersRecord
 }
 
@@ -207,6 +235,8 @@ export type CollectionResponses = {
 	deliverySettings: DeliverySettingsResponse
 	orders: OrdersResponse
 	products: ProductsResponse
+	review_count: ReviewCountResponse
+	reviews: ReviewsResponse
 	users: UsersResponse
 }
 
