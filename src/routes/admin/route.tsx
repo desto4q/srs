@@ -8,7 +8,8 @@ export const Route = createFileRoute("/admin")({
   component: RouteComponent,
   loader: () => {
     const { user } = useUser();
-    if (user.collectionName != "admins")
+
+    if (!user || user.collectionName != "admins")
       return redirect({
         to: "/",
         replace: true,

@@ -1,0 +1,37 @@
+import { pb } from "@/api/apiClient";
+import Card from "@/components/Card";
+import PageHeader from "@/components/Headers/PageHeader";
+import CardContainer from "@/components/layouts/CardContainer";
+import PageLoader from "@/components/layouts/PageLoader";
+import { useQuery } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/admin/products/")({
+  component: RouteComponent,
+});
+
+function RouteComponent() {
+  const query = useQuery({
+    queryKey: ["product_list", "admin"],
+    queryFn: () => pb.collection("products").getList(1, 20),
+  });
+  return (
+    <>
+      <PageHeader title="Product List" />
+      <div>
+        <PageLoader query={query}>
+          {(data) => {
+            const items = data.items;
+            return (
+              <CardContainer>
+                {items.map((item) => (
+                  <Card key={item.id} item={item}></Card>
+                ))}
+              </CardContainer>
+            );
+          }}
+        </PageLoader>
+      </div>
+    </>
+  );
+}
