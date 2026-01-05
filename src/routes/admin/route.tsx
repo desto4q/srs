@@ -2,6 +2,7 @@ import PageContainer from "@/components/layouts/PageContainer";
 import { useUser } from "@/helpers/client";
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import AdminNavBar from "./-components/AdminNavBar";
+import AdminSideBar from "./-components/AdminSidebar";
 
 export const Route = createFileRoute("/admin")({
   component: RouteComponent,
@@ -41,6 +42,7 @@ function RouteComponent() {
           ></label>
           <div className=" bg-base-200 min-h-full w-3xs md:border-r fade flex">
             {/* Sidebar content here */}
+            <AdminSideBar />
             {/*<AppDrawer />*/}
           </div>
         </div>
