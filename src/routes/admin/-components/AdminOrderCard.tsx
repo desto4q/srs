@@ -48,7 +48,7 @@ export default function AdminOrderCard({
         <div className="flex justify-between items-center mt-2">
           <span className="text-sm opacity-60">Total Amount</span>
           <span className="text-xl font-bold text-primary">
-            ${((order.price || 0) * (order.quantity || 1)).toFixed(2)}
+            N {(order.price + order.deliveryFee).toLocaleString()}
           </span>
         </div>
 
