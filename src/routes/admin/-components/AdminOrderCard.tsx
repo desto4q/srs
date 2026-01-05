@@ -25,7 +25,7 @@ export default function AdminOrderCard({
   return (
     <div
       key={order.id}
-      className="card ring fade bg-base-100 shadow-xl border border-base-200"
+      className="card ring fade bg-base-100 shadow border border-base-200"
     >
       <div className="card-body p-5">
         <div className="flex justify-between items-start">
