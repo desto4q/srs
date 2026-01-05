@@ -12,6 +12,7 @@ export enum Collections {
 	Otps = "_otps",
 	Superusers = "_superusers",
 	Admins = "admins",
+	Analytics = "analytics",
 	Banners = "banners",
 	Categories = "categories",
 	DeliverySettings = "deliverySettings",
@@ -109,6 +110,16 @@ export type AdminsRecord = {
 	tokenKey: string
 	updated: IsoAutoDateString
 	verified?: boolean
+}
+
+export type AnalyticsRecord<Tcancelled = unknown, Tdelivered = unknown, Tin_transit = unknown, Tpending = unknown, Tprocessing = unknown> = {
+	cancelled?: null | Tcancelled
+	delivered?: null | Tdelivered
+	id: string
+	in_transit?: null | Tin_transit
+	pending?: null | Tpending
+	processing?: null | Tprocessing
+	total_orders?: number
 }
 
 export type BannersRecord = {
@@ -210,6 +221,7 @@ export type MfasResponse<Texpand = unknown> = Required<MfasRecord> & BaseSystemF
 export type OtpsResponse<Texpand = unknown> = Required<OtpsRecord> & BaseSystemFields<Texpand>
 export type SuperusersResponse<Texpand = unknown> = Required<SuperusersRecord> & AuthSystemFields<Texpand>
 export type AdminsResponse<Texpand = unknown> = Required<AdminsRecord> & AuthSystemFields<Texpand>
+export type AnalyticsResponse<Tcancelled = unknown, Tdelivered = unknown, Tin_transit = unknown, Tpending = unknown, Tprocessing = unknown, Texpand = unknown> = Required<AnalyticsRecord<Tcancelled, Tdelivered, Tin_transit, Tpending, Tprocessing>> & BaseSystemFields<Texpand>
 export type BannersResponse<Texpand = unknown> = Required<BannersRecord> & BaseSystemFields<Texpand>
 export type CategoriesResponse<Texpand = unknown> = Required<CategoriesRecord> & BaseSystemFields<Texpand>
 export type DeliverySettingsResponse<Texpand = unknown> = Required<DeliverySettingsRecord> & BaseSystemFields<Texpand>
@@ -228,6 +240,7 @@ export type CollectionRecords = {
 	_otps: OtpsRecord
 	_superusers: SuperusersRecord
 	admins: AdminsRecord
+	analytics: AnalyticsRecord
 	banners: BannersRecord
 	categories: CategoriesRecord
 	deliverySettings: DeliverySettingsRecord
@@ -245,6 +258,7 @@ export type CollectionResponses = {
 	_otps: OtpsResponse
 	_superusers: SuperusersResponse
 	admins: AdminsResponse
+	analytics: AnalyticsResponse
 	banners: BannersResponse
 	categories: CategoriesResponse
 	deliverySettings: DeliverySettingsResponse

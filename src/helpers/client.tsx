@@ -45,9 +45,11 @@ export const useUser = () => {
 
 export const validate_user = () => {
   const isValid = pb.authStore.isValid;
+  const record = pb.authStore.record;
+
   if (isValid) {
     return pb
-      .collection("users")
+      .collection(record.collectionName)
       .authRefresh()
       .catch((err) => {
         if (err.status === 401) {
