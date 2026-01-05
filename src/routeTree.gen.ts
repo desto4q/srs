@@ -11,11 +11,14 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteRouteImport } from './routes/auth/route'
 import { Route as AppRouteRouteImport } from './routes/app/route'
+import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppIndexRouteImport } from './routes/app/index'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as AuthSignupRouteImport } from './routes/auth/signup'
 import { Route as AuthLogoutRouteImport } from './routes/auth/logout'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as AuthAdminRouteImport } from './routes/auth/admin'
 import { Route as AppProductsRouteRouteImport } from './routes/app/products/route'
 import { Route as AppOrdersRouteRouteImport } from './routes/app/orders/route'
 import { Route as AppProfileIndexRouteImport } from './routes/app/profile/index'
@@ -36,6 +39,11 @@ const AppRouteRoute = AppRouteRouteImport.update({
   path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRouteRoute = AdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -45,6 +53,11 @@ const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AppRouteRoute,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AuthSignupRoute = AuthSignupRouteImport.update({
   id: '/signup',
@@ -59,6 +72,11 @@ const AuthLogoutRoute = AuthLogoutRouteImport.update({
 const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const AuthAdminRoute = AuthAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => AuthRouteRoute,
 } as any)
 const AppProductsRouteRoute = AppProductsRouteRouteImport.update({
@@ -109,13 +127,16 @@ const AppOrderOrderIdRoute = AppOrderOrderIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteRouteWithChildren
   '/app': typeof AppRouteRouteWithChildren
   '/auth': typeof AuthRouteRouteWithChildren
   '/app/orders': typeof AppOrdersRouteRouteWithChildren
   '/app/products': typeof AppProductsRouteRouteWithChildren
+  '/auth/admin': typeof AuthAdminRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/logout': typeof AuthLogoutRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/admin/': typeof AdminIndexRoute
   '/app/': typeof AppIndexRoute
   '/app/order/$orderId': typeof AppOrderOrderIdRoute
   '/app/product/$id': typeof AppProductIdRoute
@@ -128,9 +149,11 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
+  '/auth/admin': typeof AuthAdminRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/logout': typeof AuthLogoutRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/admin': typeof AdminIndexRoute
   '/app': typeof AppIndexRoute
   '/app/order/$orderId': typeof AppOrderOrderIdRoute
   '/app/product/$id': typeof AppProductIdRoute
@@ -143,13 +166,16 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteRouteWithChildren
   '/app': typeof AppRouteRouteWithChildren
   '/auth': typeof AuthRouteRouteWithChildren
   '/app/orders': typeof AppOrdersRouteRouteWithChildren
   '/app/products': typeof AppProductsRouteRouteWithChildren
+  '/auth/admin': typeof AuthAdminRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/logout': typeof AuthLogoutRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/admin/': typeof AdminIndexRoute
   '/app/': typeof AppIndexRoute
   '/app/order/$orderId': typeof AppOrderOrderIdRoute
   '/app/product/$id': typeof AppProductIdRoute
@@ -163,13 +189,16 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/app'
     | '/auth'
     | '/app/orders'
     | '/app/products'
+    | '/auth/admin'
     | '/auth/login'
     | '/auth/logout'
     | '/auth/signup'
+    | '/admin/'
     | '/app/'
     | '/app/order/$orderId'
     | '/app/product/$id'
@@ -182,9 +211,11 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/auth/admin'
     | '/auth/login'
     | '/auth/logout'
     | '/auth/signup'
+    | '/admin'
     | '/app'
     | '/app/order/$orderId'
     | '/app/product/$id'
@@ -196,13 +227,16 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/app'
     | '/auth'
     | '/app/orders'
     | '/app/products'
+    | '/auth/admin'
     | '/auth/login'
     | '/auth/logout'
     | '/auth/signup'
+    | '/admin/'
     | '/app/'
     | '/app/order/$orderId'
     | '/app/product/$id'
@@ -215,6 +249,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRouteRoute: typeof AdminRouteRouteWithChildren
   AppRouteRoute: typeof AppRouteRouteWithChildren
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
 }
@@ -235,6 +270,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -248,6 +290,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/'
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRouteRoute
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/auth/signup': {
       id: '/auth/signup'
@@ -268,6 +317,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/auth/login'
       preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/auth/admin': {
+      id: '/auth/admin'
+      path: '/admin'
+      fullPath: '/auth/admin'
+      preLoaderRoute: typeof AuthAdminRouteImport
       parentRoute: typeof AuthRouteRoute
     }
     '/app/products': {
@@ -336,6 +392,18 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteRouteChildren {
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
+  AdminRouteRouteChildren,
+)
+
 interface AppOrdersRouteRouteChildren {
   AppOrdersIndexRoute: typeof AppOrdersIndexRoute
 }
@@ -386,12 +454,14 @@ const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
 )
 
 interface AuthRouteRouteChildren {
+  AuthAdminRoute: typeof AuthAdminRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthLogoutRoute: typeof AuthLogoutRoute
   AuthSignupRoute: typeof AuthSignupRoute
 }
 
 const AuthRouteRouteChildren: AuthRouteRouteChildren = {
+  AuthAdminRoute: AuthAdminRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthLogoutRoute: AuthLogoutRoute,
   AuthSignupRoute: AuthSignupRoute,
@@ -403,6 +473,7 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRouteRoute: AdminRouteRouteWithChildren,
   AppRouteRoute: AppRouteRouteWithChildren,
   AuthRouteRoute: AuthRouteRouteWithChildren,
 }

@@ -11,6 +11,7 @@ export enum Collections {
 	Mfas = "_mfas",
 	Otps = "_otps",
 	Superusers = "_superusers",
+	Admins = "admins",
 	Banners = "banners",
 	Categories = "categories",
 	DeliverySettings = "deliverySettings",
@@ -89,6 +90,17 @@ export type OtpsRecord = {
 }
 
 export type SuperusersRecord = {
+	created: IsoAutoDateString
+	email: string
+	emailVisibility?: boolean
+	id: string
+	password: string
+	tokenKey: string
+	updated: IsoAutoDateString
+	verified?: boolean
+}
+
+export type AdminsRecord = {
 	created: IsoAutoDateString
 	email: string
 	emailVisibility?: boolean
@@ -197,6 +209,7 @@ export type ExternalauthsResponse<Texpand = unknown> = Required<ExternalauthsRec
 export type MfasResponse<Texpand = unknown> = Required<MfasRecord> & BaseSystemFields<Texpand>
 export type OtpsResponse<Texpand = unknown> = Required<OtpsRecord> & BaseSystemFields<Texpand>
 export type SuperusersResponse<Texpand = unknown> = Required<SuperusersRecord> & AuthSystemFields<Texpand>
+export type AdminsResponse<Texpand = unknown> = Required<AdminsRecord> & AuthSystemFields<Texpand>
 export type BannersResponse<Texpand = unknown> = Required<BannersRecord> & BaseSystemFields<Texpand>
 export type CategoriesResponse<Texpand = unknown> = Required<CategoriesRecord> & BaseSystemFields<Texpand>
 export type DeliverySettingsResponse<Texpand = unknown> = Required<DeliverySettingsRecord> & BaseSystemFields<Texpand>
@@ -214,6 +227,7 @@ export type CollectionRecords = {
 	_mfas: MfasRecord
 	_otps: OtpsRecord
 	_superusers: SuperusersRecord
+	admins: AdminsRecord
 	banners: BannersRecord
 	categories: CategoriesRecord
 	deliverySettings: DeliverySettingsRecord
@@ -230,6 +244,7 @@ export type CollectionResponses = {
 	_mfas: MfasResponse
 	_otps: OtpsResponse
 	_superusers: SuperusersResponse
+	admins: AdminsResponse
 	banners: BannersResponse
 	categories: CategoriesResponse
 	deliverySettings: DeliverySettingsResponse
