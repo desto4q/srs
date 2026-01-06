@@ -42,7 +42,7 @@ export function DeliveryInfo() {
     initialData: defaultDeliverySettings,
   });
   return (
-    <div className="card bg-base-100 shadow  ring fade space-y-2 rounded-box">
+    <div className="card bg-base-100 shadow  ring fade  rounded-box">
       <div className="flex items-center justify-between  border-b fade p-3">
         <h2 className="card-title  font-bold">Delivery Information</h2>
       </div>
@@ -50,10 +50,22 @@ export function DeliveryInfo() {
         {(data) => {
           const isValid = validateItems(data);
           const addr = validate_addr(data);
+          if (!user) {
+            return (
+              <div className="p-4 space-x-2">
+                Not logged in{" "}
+                <Link
+                  className="btn btn-sm btn-soft ring fade btn-info"
+                  to="/app/login"
+                >
+                  Login
+                </Link>
+              </div>
+            );
+          }
           return (
             <>
-              {!user && <div>Not logged in</div>}
-              {!user && !isValid && (
+              {!addr.isValid && (
                 <div className="p-4">
                   <div className="flex items-center mb-2 justify-between">
                     <p className="text-error text-sm ">
@@ -71,7 +83,8 @@ export function DeliveryInfo() {
                   </p>
                 </div>
               )}
-              {isValid && (
+
+              {addr.isValid && (
                 <div className="flex  gap-2 p-4">
                   <MapPin className="size-6 stroke-primary" />
                   <p className="text-base leading-tight">

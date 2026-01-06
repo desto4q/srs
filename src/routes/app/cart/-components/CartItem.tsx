@@ -9,35 +9,29 @@ export default function CartListItem({ item }: { item: CartItem }) {
     <>
       <div
         key={item.id}
-        className="bg-base-200 ring fade p-4 flex gap-4 rounded-box "
+        className="card card-compact bg-base-100 shadow-md p-4 flex flex-row gap-4"
       >
-        <figure className="h-22 w-22 lg:aspect-9/12  lg:h-auto lg:min-w-32 ring fade  shrink-0 rounded-box bg-primary/30 overflow-hidden">
-          <img
-            src={item.img}
-            alt=""
-            className="w-full h-full fade object-cover"
-          />
+        <figure className="h-24 w-24 lg:h-auto lg:min-w-32 rounded-lg overflow-hidden bg-surface-container-low">
+          <img src={item.img} alt="" className="w-full h-full object-cover" />
         </figure>
         {/*item details*/}
-        <div className="flex-grow flex flex-col justify-between">
-          <div className="flex flex-col gap-2">
-            <h2 className="text-2xl font-bold text-base-content">
-              {item.name}
-            </h2>
+        <div className="grow flex flex-col justify-between">
+          <div className="flex flex-col gap-1">
+            <h2 className="text-lg font-medium text-on-surface">{item.name}</h2>
             {hasItems &&
               Object.entries(item.options).map(([key, option]) => (
-                <p key={key} className="text-sm text-base-content/70">
-                  <span className="font-semibold capitalize text-base-content">
+                <p key={key} className="text-sm text-on-surface-variant">
+                  <span className="font-medium capitalize text-on-surface">
                     {key}
                   </span>
                   : {option.values[0].label}
                 </p>
               ))}
           </div>
-          <div className="flex flex-col lg:flex-row gap-2  lg:items-center justify-between ">
+          <div className="flex flex-col lg:flex-row gap-2 lg:items-center justify-between mt-2">
             <QuantityInput id={item.id} quantity={item.quantity} />
-            <div className="text-lg font-bold text-primary">
-              <span className="text-base-content/50 text-sm">NGN</span>{" "}
+            <div className="text-lg font-semibold text-primary">
+              <span className="text-on-surface-variant text-sm">NGN</span>{" "}
               {compute_total_price(
                 item.price,
                 item.options,
@@ -46,17 +40,17 @@ export default function CartListItem({ item }: { item: CartItem }) {
             </div>
           </div>
 
-          <div className="flex gap-4 mt-2">
+          <div className="flex gap-4 mt-3">
             <button
               onClick={() => {
                 console.log(item);
               }}
-              className="btn btn-link btn-sm p-0 h-auto min-h-0 text-secondary hover:text-secondary-focus"
+              className="btn btn-sm btn-ghost text-secondary hover:bg-secondary/10 hover:text-secondary-focus p-0 h-auto min-h-0"
             >
               Move to Favorites
             </button>
             <button
-              className="btn btn-link btn-sm p-0 h-auto min-h-0 text-error hover:text-error-focus"
+              className="btn btn-sm btn-ghost text-error hover:bg-error/10 hover:text-error-focus p-0 h-auto min-h-0"
               onClick={() => remove_from_cart(item.id)}
             >
               Remove
@@ -79,25 +73,25 @@ const QuantityInput = (props: { id: string; quantity: number }) => {
   const { quantity } = props;
   return (
     <>
-      <div className="form-control">
-        <div className="join">
-          <button
-            type="button"
-            className="btn join-item btn-primary"
-            onClick={() => handleQuantityChange("decrease")}
-            disabled={quantity === 1}
-          >
-            -
-          </button>
-          <div className="btn btn-primary btn-soft ring fade">{quantity}</div>
-          <button
-            type="button"
-            className="btn join-item btn-primary"
-            onClick={() => handleQuantityChange("increase")}
-          >
-            +
-          </button>
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          className="btn btn-sm btn-outline btn-primary rounded-full w-8 h-8 p-0 flex items-center justify-center"
+          onClick={() => handleQuantityChange("decrease")}
+          disabled={quantity === 1}
+        >
+          -
+        </button>
+        <div className="text-base font-medium text-on-surface w-6 text-center">
+          {quantity}
         </div>
+        <button
+          type="button"
+          className="btn btn-sm btn-primary rounded-full w-8 h-8 p-0 flex items-center justify-center"
+          onClick={() => handleQuantityChange("increase")}
+        >
+          +
+        </button>
       </div>
     </>
   );
