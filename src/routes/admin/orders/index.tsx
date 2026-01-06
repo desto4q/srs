@@ -5,16 +5,19 @@ import PageLoader from "@/components/layouts/PageLoader";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import AdminOrderCard from "../-components/AdminOrderCard";
+import Pagination, { usePagination } from "@/components/pagination/Pagination";
+import Paginator from "@/components/pagination/Pagination";
 
 export const Route = createFileRoute("/admin/orders/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const pageProps = usePagination();
   const query = useQuery({
-    queryKey: ["orders-admin-list"],
+    queryKey: ["orders-admin-list", pageProps.currentPage],
     queryFn: () =>
-      pb.collection("orders").getList(1, 20, {
+      pb.collection("orders").getList(pageProps.currentPage, 20, {
         expand: "productId",
         filter: "status = 'pending'",
       }),
@@ -32,6 +35,7 @@ function RouteComponent() {
                   return <AdminOrderCard order={item as any} key={item.id} />;
                 })}
               </CardContainer>
+              <Paginator totalPages={data.totalPages}></Paginator>
             </>
           );
         }}
