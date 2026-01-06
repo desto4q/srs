@@ -35,59 +35,123 @@ export default function AdminOrderCard({
   return (
     <div
       key={order.id}
-      className="card ring fade bg-base-100 shadow border border-base-200"
+      className="group relative bg-base-100 border border-base-300 rounded-box overflow-hidden transition-all duration-300 hover:shadow-xl"
     >
-      <div className="card-body p-5">
+      <div className="p-6 flex flex-col h-full gap-5">
+        {/* Header Section */}
         <div className="flex justify-between items-start">
-          <div>
-            <h2 className="card-title text-sm opacity-70 uppercase">
-              Order #{order.refId || order.id.slice(0, 5)}
-            </h2>
-            <p className="font-bold text-lg">{product?.name || "Product"}</p>
-          </div>
-          <div>{render_status(order.status as any)}</div>
-        </div>
-        <div className="divider my-1"></div>
-        <div className="flex justify-between text-sm">
-          <span className="opacity-60">{date}</span>
-          <span className="font-medium">Qty: {order.quantity}</span>
-        </div>
-        <div className="flex justify-between items-center mt-2">
-          <span className="text-sm opacity-60">Total Amount</span>
-          <span className="text-xl font-bold text-primary">
-            N {(order.price + order.deliveryFee).toLocaleString()}
-          </span>
-        </div>
-        {keys.length > 0 && (
-          <>
-            <div className="ring p-2 ring-primary/30 rounded-box fade">
-              {keys.map((item) => {
-                return (
-                  <div key={item}>
-                    <span>{item}: </span>
-                    {productOptions[item].values[0].label}
-                  </div>
-                );
-              })}
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2">
+              <span className="badge badge-ghost badge-sm font-bold tracking-wider uppercase">
+                #{order.refId || order.id.slice(0, 5)}
+              </span>
+              <span className="text-[11px] font-medium text-base-content/60">
+                {time}
+              </span>
             </div>
-          </>
+            <h2 className="text-xl font-semibold tracking-tight text-base-content">
+              {product?.name || "Product"}
+            </h2>
+          </div>
+          <div className="shrink-0 scale-90 origin-top-right">
+            {render_status(order.status as any)}
+          </div>
+        </div>
+
+        {/* Info Grid */}
+        <div className="grid grid-cols-2 gap-8 py-4 border-y border-base-200">
+          <div className="flex flex-col gap-0.5">
+            <span className="text-[11px] font-semibold text-base-content/50 uppercase tracking-wide">
+              Order Date
+            </span>
+            <span className="text-sm font-medium text-base-content/80">
+              {date}
+            </span>
+          </div>
+          <div className="flex flex-col gap-0.5 items-end">
+            <span className="text-[11px] font-semibold text-base-content/50 uppercase tracking-wide">
+              Quantity
+            </span>
+            <span className="text-sm font-bold text-base-content">
+              {order.quantity}{" "}
+              <span className="text-base-content/40 font-normal">units</span>
+            </span>
+          </div>
+        </div>
+
+        {/* Product Options */}
+        {keys.length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {keys.map((item) => (
+              <div
+                key={item}
+                className="px-2.5 py-1 rounded-md bg-base-200/50 border border-base-300 text-[12px] flex gap-1.5"
+              >
+                <span className="text-base-content/50">{item}</span>
+                <span className="font-semibold text-base-content/80">
+                  {productOptions[item].values[0].label}
+                </span>
+              </div>
+            ))}
+          </div>
         )}
 
-        {showAddress ? (
-          <ShippingAddress user_id={order.userId} />
-        ) : (
-          <button
-            onClick={() => setShowAddress(true)}
-            className="btn btn-soft ring fade btn-sm w-full mt-2"
+        {/* Pricing Section */}
+        <div className="flex justify-between items-center mt-2">
+          <div className="flex flex-col">
+            <span className="text-[11px] font-semibold text-base-content/50 uppercase tracking-wide">
+              Total
+            </span>
+            <div className="flex items-baseline gap-1">
+              <span className="text-2xl font-bold tracking-tighter text-base-content">
+                ₦{(order.price + order.deliveryFee).toLocaleString()}
+              </span>
+              <span className="text-[10px] text-base-content/50 font-medium">
+                NGN
+              </span>
+            </div>
+          </div>
+          <div className="text-[10px] font-medium px-2 py-1 rounded bg-base-200 text-base-content/60">
+            Shipping Included
+          </div>
+        </div>
+
+        {/* Shipping Toggle */}
+        <div className="mt-2">
+          {showAddress ? (
+            <div className="animate-in fade-in zoom-in-95 duration-300">
+              <ShippingAddress user_id={order.userId} />
+            </div>
+          ) : (
+            <button
+              onClick={() => setShowAddress(true)}
+              className="btn btn-ghost btn-xs w-full font-semibold text-base-content/60 hover:text-base-content transition-colors flex items-center justify-center gap-1"
+            >
+              Show Delivery Details
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+          )}
+        </div>
+
+        {/* Action Button */}
+        <div className="mt-auto pt-2">
+          <Link
+            to={`/admin/order/${order.id}`}
+            className="btn btn-primary w-full rounded-xl text-sm font-bold transition-all active:scale-[0.98] shadow-lg"
           >
-            Show Shipping Address
-          </button>
-        )}
-
-        <div className="card-actions justify-end mt-auto pt-4">
-          <button className="btn btn-ghost btn-sm">Details</button>
-          <Link to={`/admin/order/${order.id}`} className="btn btn-info btn-sm">
-            Manage
+            Manage Order
           </Link>
         </div>
       </div>
@@ -95,7 +159,7 @@ export default function AdminOrderCard({
   );
 }
 
-export const ShippingAddress = ({ user_id }) => {
+export const ShippingAddress = ({ user_id }: { user_id: string }) => {
   const query = useQuery({
     queryKey: ["shipping-address", user_id],
     queryFn: async () => pb.collection("deliverySettings").getOne(user_id),
@@ -103,39 +167,59 @@ export const ShippingAddress = ({ user_id }) => {
   });
 
   return (
-    <div className="min-h-20 ring rounded-box fade mt-2">
-      <h2 className="p-2 text-sm font-bold text-current/80 bg-base-200 border-b fade">
-        Shipping Address
-      </h2>
-      <div className="p-2 flex">
+    <div className="rounded-xl border border-base-300 bg-base-200/30 overflow-hidden">
+      <div className="px-3 py-2 bg-base-200/50 border-b border-base-300 flex items-center gap-2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="text-primary"
+        >
+          <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+          <circle cx="12" cy="10" r="3" />
+        </svg>
+        <h2 className="text-[11px] font-bold uppercase tracking-wider text-base-content/70">
+          Shipping Address
+        </h2>
+      </div>
+      <div className="p-3">
         <CompLoader
           query={query}
-          customError={(error) => {
-            return (
-              <div className="flex gap-2 items-center p-2">
-                <span>{error}</span>
-                <button
-                  onClick={() => {
-                    query.refetch();
-                  }}
-                  className="btn btn-error btn-sm"
-                >
-                  Retry
-                </button>
-              </div>
-            );
-          }}
+          customError={() => (
+            <div className="flex items-center justify-between w-full gap-2">
+              <span className="text-xs text-error font-medium">
+                Failed to load address
+              </span>
+              <button
+                onClick={() => query.refetch()}
+                className="btn btn-ghost btn-xs text-error hover:bg-error/10"
+              >
+                Retry
+              </button>
+            </div>
+          )}
           customLoading={
-            <div className="p-2 space-x-4">
-              {" "}
-              <span className="loading"></span>
-              <span>Loading...</span>
+            <div className="flex items-center gap-3 py-1">
+              <span className="loading loading-spinner loading-xs text-primary"></span>
+              <span className="text-xs font-medium text-base-content/50">
+                Fetching details...
+              </span>
             </div>
           }
         >
           {(data) => {
-            const { full_address, isValid } = validate_addr(data);
-            return <>{full_address}</>;
+            const { full_address } = validate_addr(data);
+            return (
+              <p className="text-sm leading-relaxed text-base-content/80 font-medium">
+                {full_address || "No address provided"}
+              </p>
+            );
           }}
         </CompLoader>
       </div>
