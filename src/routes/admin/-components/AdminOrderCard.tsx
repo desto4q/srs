@@ -1,4 +1,5 @@
 import { render_status } from "@/helpers/ui";
+import type { OptionsConfig } from "@/types";
 import type {
   OrdersRecord,
   OrdersResponse,
@@ -7,8 +8,10 @@ import type {
 
 export default function AdminOrderCard({
   order,
+  expand,
 }: {
-  order: OrdersResponse<ProductsRecord>;
+  order: OrdersResponse<OptionsConfig, ProductsRecord>;
+  expand?: boolean;
 }) {
   const product = order.expand?.["productId"] as ProductsRecord;
   const date = new Date(order.created).toLocaleDateString("en-US", {
@@ -21,6 +24,8 @@ export default function AdminOrderCard({
     hour: "2-digit",
     minute: "2-digit",
   });
+  const productOptions = order["productOptions"] as OptionsConfig;
+  const keys = Object.keys(productOptions);
 
   return (
     <div
@@ -37,21 +42,31 @@ export default function AdminOrderCard({
           </div>
           <div>{render_status(order.status as any)}</div>
         </div>
-
         <div className="divider my-1"></div>
-
         <div className="flex justify-between text-sm">
           <span className="opacity-60">{date}</span>
           <span className="font-medium">Qty: {order.quantity}</span>
         </div>
-
         <div className="flex justify-between items-center mt-2">
           <span className="text-sm opacity-60">Total Amount</span>
           <span className="text-xl font-bold text-primary">
             N {(order.price + order.deliveryFee).toLocaleString()}
           </span>
         </div>
-
+        {keys.length > 0 && (
+          <>
+            <div className="ring p-2 ring-primary/30 rounded-box fade">
+              {keys.map((item) => {
+                return (
+                  <div key={item}>
+                    <span>{item}: </span>
+                    {productOptions[item].values[0].label}
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )}
         <div className="card-actions justify-end mt-auto">
           <button className="btn btn-ghost btn-sm">Details</button>
           <button className="btn btn-info btn-sm">Manage</button>
