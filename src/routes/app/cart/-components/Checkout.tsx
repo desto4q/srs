@@ -7,7 +7,7 @@ import {
   useUser,
 } from "@/helpers/client";
 import { useCartStore, validate_addr } from "@/store/client";
-import type { CartItemOption, OrderType } from "@/types";
+import type { OrderType } from "@/types";
 import { toast } from "sonner";
 
 import { usePaystackPayment } from "react-paystack";
@@ -21,6 +21,7 @@ const defaultDeliverySettings = {
   country: "",
   zip: "",
 };
+
 export default function Checkout() {
   const { user } = useUser();
   const query = useQuery({
@@ -49,7 +50,7 @@ export default function Checkout() {
     initialData: defaultDeliverySettings,
   });
   const data = query.data;
-  const { isValid, full_address } = validate_addr({
+  const { isValid } = validate_addr({
     state: data.state,
     street: data.street,
     city: data.city,
@@ -119,56 +120,84 @@ export default function Checkout() {
       },
     });
   };
-  // you can call this function anything
 
   return (
-    <div className="p-4 ring fade rounded-box space-y-4">
-      <h2 className="text-xl font-bold">Total</h2>
-      <div className="ring p-4 fade rounded-box">
-        <ul className="space-y-2">
-          <li>
-            <div className="flex items-center justify-between">
-              <span>SubTotal:</span>
-              <span className="text-right font-bold">
+    <div className="bg-base-100 shadow-lg rounded-3xl overflow-hidden fade ring">
+      <div className="p-6 space-y-6">
+        <header>
+          <h2 className="text-2xl font-medium tracking-tight text-base-content">
+            Order Summary
+          </h2>
+          <p className="text-sm text-base-content/60 mt-1">
+            Review your total and delivery details
+          </p>
+        </header>
+
+        <div className="bg-base-200/50 rounded-2xl p-5 space-y-4">
+          <div className="space-y-3">
+            <div className="flex items-center justify-between text-base-content/70">
+              <span className="text-sm font-medium">Subtotal</span>
+              <span className="font-mono">
                 NGN {calculate_cart_total(props.cart).toLocaleString()}
               </span>
             </div>
-          </li>
-          <li>
-            <div className="flex items-center justify-between">
-              <span>Delivery Fee:</span>
-              <span className="text-right font-bold">
-                {" "}
+            <div className="flex items-center justify-between text-base-content/70">
+              <span className="text-sm font-medium">Delivery Fee</span>
+              <span className="font-mono">
                 NGN {deliveryFee.toLocaleString()}
               </span>
             </div>
-          </li>
-          <li>
-            <div className="flex items-center justify-between">
-              <span className="font-bold text-lg">Total:</span>
-              <span className="text-right font-bold text-primary">
-                {" "}
-                NGN {total.toLocaleString()}
-              </span>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <button
-        disabled={query.isLoading || query.isError}
-        onClick={() => create_orders()}
-        className="btn btn-primary btn-block"
-      >
-        {query.isLoading ? (
-          <div className="flex items-center justify-center">
-            <span className="loading ml-2"></span>
-            <span>Loading...</span>
           </div>
-        ) : (
-          "Check Out"
-        )}
-      </button>
-      <DeliveryInfo />
+
+          <div className="divider my-0 opacity-50"></div>
+
+          <div className="flex items-center justify-between">
+            <span className="text-lg font-bold text-base-content">Total</span>
+            <span className="text-xl font-bold text-primary tracking-tight">
+              NGN {total.toLocaleString()}
+            </span>
+          </div>
+        </div>
+
+        <div className="space-y-3">
+          <button
+            disabled={query.isLoading || query.isError}
+            onClick={() => create_orders()}
+            className="btn btn-primary btn-block h-14 rounded-xl shadow-md hover:shadow-lg transition-all normal-case text-lg font-semibold"
+          >
+            {query.isLoading ? (
+              <div className="flex items-center gap-3">
+                <span className="loading loading-spinner loading-sm"></span>
+                <span>Processing...</span>
+              </div>
+            ) : (
+              "Complete Purchase"
+            )}
+          </button>
+
+          <div className="flex items-center justify-center gap-2 text-xs text-base-content/40 uppercase tracking-widest font-bold">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+              />
+            </svg>
+            Secure Checkout
+          </div>
+        </div>
+
+        <div className="pt-2">
+          <DeliveryInfo />
+        </div>
+      </div>
     </div>
   );
 }

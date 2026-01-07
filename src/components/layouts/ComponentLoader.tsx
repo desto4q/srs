@@ -53,7 +53,9 @@ export default function CompLoader<TData>(props: PageLoader<TData>) {
             </div>
             <button
               className="btn btn-error btn-block"
-              onClick={() => props.query.refetch()}
+              onClick={() => {
+                return props.query.refetch();
+              }}
             >
               Reload
             </button>

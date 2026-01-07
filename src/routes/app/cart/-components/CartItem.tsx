@@ -7,10 +7,7 @@ export default function CartListItem({ item }: { item: CartItem }) {
   const hasItems = Object.keys(item.options).length > 0;
   return (
     <>
-      <div
-        key={item.id}
-        className="card card-compact bg-base-100 shadow-md p-4 flex flex-row gap-4"
-      >
+      <div className="card card-compact bg-base-100 ring fade shadow-md p-4 flex flex-row gap-4">
         <figure className="h-24 w-24 lg:h-auto lg:min-w-32 rounded-lg overflow-hidden bg-surface-container-low">
           <img src={item.img} alt="" className="w-full h-full object-cover" />
         </figure>
