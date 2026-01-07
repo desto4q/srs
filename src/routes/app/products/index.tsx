@@ -2,6 +2,7 @@ import { pb } from "@/api/apiClient";
 import Card from "@/components/Card";
 import CardContainer from "@/components/layouts/CardContainer";
 import PageLoader from "@/components/layouts/PageLoader";
+import Paginator, { usePagination } from "@/components/pagination/Pagination";
 import SearchBar from "@/components/SearchBar";
 import { useFiltersStore } from "@/store/client";
 import type { OptionsConfig } from "@/types";
@@ -22,10 +23,11 @@ const red = String(202);
 
 function RouteComponent() {
   const params = useSearch({ strict: false });
+  const pagination = usePagination();
   const { filters } = useFiltersStore();
   const { search } = params;
   const query = useQuery({
-    queryKey: ["products", search, filters],
+    queryKey: ["products", search, filters, pagination.currentPage],
     queryFn: async () => {
       let filterString = `name ?~ "${search}"`;
 
@@ -43,10 +45,12 @@ function RouteComponent() {
         filterString += ` && (price <= ${filters.max} || discountPrice <= ${filters.max})`;
       }
 
-      let resp = await pb.collection("products").getList(1, 10, {
-        filter: filterString,
-        expand: "category", // Expand the category relation to filter by category name
-      });
+      let resp = await pb
+        .collection("products")
+        .getList(pagination.currentPage, 10, {
+          filter: filterString,
+          expand: "category", // Expand the category relation to filter by category name
+        });
       return resp;
     },
     retry: 3,
@@ -80,6 +84,7 @@ function RouteComponent() {
                     </Card>
                   ))}
                 </CardContainer>
+                <Paginator totalPages={data.totalPages} />
               </>
             );
           }}
